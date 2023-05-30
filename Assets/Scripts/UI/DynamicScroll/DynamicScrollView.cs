@@ -24,6 +24,12 @@ public class DynamicScrollView : MonoBehaviour
 
     public Vector3 spacing = Vector3.down * 50;
 
+    [SerializeField]
+    private Transform topLimit;
+
+    [SerializeField]
+    private Transform botLimit;
+
     private void Start()
     {
         scrollRect = GetComponent<ScrollRect>();
@@ -37,12 +43,12 @@ public class DynamicScrollView : MonoBehaviour
 
     private void Update()
     {
-        if (objectPool[botItemIndex].transform.position.y < -15f)
+        if (objectPool[botItemIndex].transform.position.y < botLimit.position.y)
         {
             //Scrolling Up
             InfiniteView(true);
         }
-        else if (objectPool[topItemIndex].transform.position.y > 450f)
+        else if (objectPool[topItemIndex].transform.position.y > topLimit.position.y)
         {
             //Scrolling Down
             InfiniteView(false);
@@ -87,7 +93,7 @@ public class DynamicScrollView : MonoBehaviour
 
     private GameObject GetPooledObject(int objectIndex)
     {
-        if (objectPool[objectIndex] != null)
+        if (objectIndex >= 0 && objectIndex < poolSize)
         {
             return objectPool[objectIndex];
         }
