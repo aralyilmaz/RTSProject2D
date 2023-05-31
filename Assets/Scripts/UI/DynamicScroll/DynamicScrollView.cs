@@ -16,6 +16,7 @@ public class DynamicScrollView : MonoBehaviour
 
     public List<Sprite> spriteList;
     public List<string> textList;
+    public List<GameObject> gameobjectList;
 
     private int topItemIndex;
     private int botItemIndex;
@@ -30,12 +31,14 @@ public class DynamicScrollView : MonoBehaviour
     [SerializeField]
     private Transform botLimit;
 
+    private bool initComplete = false;
+
     private void Start()
     {
         scrollRect = GetComponent<ScrollRect>();
-        //if (spriteList.Count != poolSize && textList.Count != poolSize)
+        //if (spriteList.Count != poolSize && textList.Count != poolSize && gameobjectList.Count != poolSize)
         //{
-        //    Debug.Log("not enough sprite");
+        //    Debug.Log("List size do not match");
         //    return;
         //}
         InitScrollView();
@@ -43,15 +46,18 @@ public class DynamicScrollView : MonoBehaviour
 
     private void Update()
     {
-        if (objectPool[botItemIndex].transform.position.y < botLimit.position.y)
+        if (initComplete) 
         {
-            //Scrolling Up
-            InfiniteView(true);
-        }
-        else if (objectPool[topItemIndex].transform.position.y > topLimit.position.y)
-        {
-            //Scrolling Down
-            InfiniteView(false);
+            if (objectPool[botItemIndex].transform.position.y < botLimit.position.y)
+            {
+                //Scrolling Up
+                InfiniteView(true);
+            }
+            else if (objectPool[topItemIndex].transform.position.y > topLimit.position.y)
+            {
+                //Scrolling Down
+                InfiniteView(false);
+            }
         }
     }
 
@@ -65,7 +71,7 @@ public class DynamicScrollView : MonoBehaviour
             tmp = Instantiate(objectToPool, content);
             if(tmp.TryGetComponent<ScrollViewItem>(out item))
             {
-                item.InitItem(spriteList[0], textList[i]);
+                item.InitItemButton(spriteList[0], textList[i], gameobjectList[i]);
             }
             //tmp.SetActive(false);
             objectPool.Add(tmp);
@@ -77,7 +83,7 @@ public class DynamicScrollView : MonoBehaviour
         topNextItemPos = 1;
         botNextItemPos = -poolSize;
         OrderListItems();
-        //StartCoroutine(InfiniteViewCoroutine(0.1f));
+        initComplete = true;
     }
 
     private void OrderListItems()
@@ -89,6 +95,8 @@ public class DynamicScrollView : MonoBehaviour
                 objectPool[i].transform.localPosition = (spacing * i);
             }
         }
+        topLimit.position = objectPool[0].transform.position - spacing;
+        botLimit.position = objectPool[poolSize - 1].transform.position + spacing;
     }
 
     private GameObject GetPooledObject(int objectIndex)
@@ -147,25 +155,6 @@ public class DynamicScrollView : MonoBehaviour
                 botNextItemPos--;
                 topNextItemPos--;
             }
-        }
-    }
-
-    private IEnumerator InfiniteViewCoroutine(float time)
-    {
-        //infinite loop in
-        for (; ; )
-        {
-            if (objectPool[botItemIndex].transform.position.y < -15f)
-            {
-                //Scrolling Up
-                InfiniteView(true);
-            }
-            else if (objectPool[topItemIndex].transform.position.y > 450f)
-            {
-                //Scrolling Down
-                InfiniteView(false);
-            }
-            yield return new WaitForSeconds(time);
         }
     }
 }

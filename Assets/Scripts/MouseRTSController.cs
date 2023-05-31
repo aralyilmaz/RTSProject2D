@@ -24,6 +24,8 @@ public class MouseRTSController : MonoBehaviour
     [SerializeField]
     private Vector3 startPosition;
 
+    public List<Interactable> interactableList;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,29 +37,51 @@ public class MouseRTSController : MonoBehaviour
     {
         CalculateMouseWorldPosition(Input.mousePosition);
 
+        //Left mouse button press
         if (Input.GetMouseButtonDown(0))
         {
-            //Left mouse button press
+            //Stop focusing any objects
+            RemoveFocus();
             startPosition = mouseWorldPosition;
         }
 
+        //Left mouse button release
         if (Input.GetMouseButtonUp(0))
         {
-            //Left mouse button release
-            //Debug.Log(mouseWorldPosition + " " + startPosition);
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, mouseWorldPosition);
 
+            //Check if hit interactable
             foreach(Collider2D collider2D in collider2DArray)
             {
-                Debug.Log(collider2D.name);
+                //Debug.Log(collider2D.name);
+                if(collider2D.TryGetComponent<Interactable>(out Interactable interactable))
+                {
+                    interactableList.Add(interactable);
+                }
             }
+            SetFocus(interactableList);
         }
     }
 
     private void CalculateMouseWorldPosition(Vector3 mouseScreenPosition)
     {
-        //get mouse position out of cliping plane of camera
-        //mouseScreenPosition.z = mainCam.nearClipPlane + 1;
         mouseWorldPosition = mainCam.ScreenToWorldPoint(mouseScreenPosition);
+    }
+
+    private void SetFocus(List<Interactable> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            list[i].OnFocused();
+        }
+    }
+
+    void RemoveFocus()
+    {
+        for (int i = 0; i < interactableList.Count; i++)
+        {
+            interactableList[i].OnDefocused();
+            interactableList.RemoveAt(i);
+        }
     }
 }

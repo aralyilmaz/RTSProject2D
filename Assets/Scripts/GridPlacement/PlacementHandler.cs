@@ -1,16 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public class PlacementHandler : MonoBehaviour
 {
     public bool placed { get; private set; }
     public BoundsInt area;
     private Vector3 offset;
-    
+
     void Start()
     {
         offset = new Vector3(this.area.size.x, this.area.size.y, 0) * 0.5f;
+        if(area.size.z != 1)
+        {
+            Debug.Log("Set z to 1");
+        }
     }
 
     public bool CanBePlaced()

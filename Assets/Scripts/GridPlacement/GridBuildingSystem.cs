@@ -29,7 +29,7 @@ public class GridBuildingSystem : MonoBehaviour
     public Tilemap tempTileMap;
 
     [SerializeField]
-    private Building buildingToBePlaced;
+    private PlacementHandler buildingToBePlaced;
     private Vector3 buildingOldPos;
     private BoundsInt oldArea;
     private Vector3 offset;
@@ -40,6 +40,8 @@ public class GridBuildingSystem : MonoBehaviour
     public TileBase whiteTileTransparant;
     public TileBase greenTileTransparant;
     public TileBase redTileTransparant;
+
+    private ScrollViewItem buildingButton;
 
     private void Start()
     {
@@ -61,7 +63,7 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (EventSystem.current.IsPointerOverGameObject(0))
+            if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
@@ -86,12 +88,14 @@ public class GridBuildingSystem : MonoBehaviour
             if (buildingToBePlaced.CanBePlaced())
             {
                 buildingToBePlaced.Place();
+                buildingButton.EnableDisableButton();
             }
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             ClearArea();
             Destroy(buildingToBePlaced.gameObject);
+            buildingButton.EnableDisableButton();
         }
     }
 
@@ -106,8 +110,6 @@ public class GridBuildingSystem : MonoBehaviour
         RedTransparant
     }
 
-
-    //try unitys method
     //Get tiles one by one and return an array of them
     private TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
     {
@@ -139,11 +141,13 @@ public class GridBuildingSystem : MonoBehaviour
         tilemap.SetTilesBlock(area, tileArray);
     }
 
-    public void InitBuilding(GameObject building)
+    public void InitBuilding(GameObject building, ScrollViewItem button)
     {
         if (building != null)
         {
-            buildingToBePlaced = Instantiate(building, Vector3.one, Quaternion.identity).GetComponent<Building>();
+            buildingButton = button;
+            buildingButton.EnableDisableButton();
+            buildingToBePlaced = Instantiate(building, Vector3.one, Quaternion.identity).GetComponent<PlacementHandler>();
             offset = new Vector3(buildingToBePlaced.area.size.x, buildingToBePlaced.area.size.y, 0) * 0.5f;
             FollowBuilding();
         }
