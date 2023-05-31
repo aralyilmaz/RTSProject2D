@@ -4,9 +4,8 @@ public class Soldier : Interactable
 {
     public float health;
     public float damage;
-    public bool placed;
     public BoundsInt area;
-
+    
     public override void Interact()
     {
         base.Interact();

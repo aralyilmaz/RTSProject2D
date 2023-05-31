@@ -4,17 +4,7 @@ using TMPro;
 
 public class InformationMenuManager : MonoBehaviour
 {
-    public static InformationMenuManager instance { get; private set; }
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of InformationMenuManager found!");
-            return;
-        }
-        instance = this;
-    }
+    MouseRTSController rtsController;
 
     [SerializeField]
     private TextMeshProUGUI menuNameText;
@@ -25,9 +15,37 @@ public class InformationMenuManager : MonoBehaviour
     [SerializeField]
     private GameObject InformationMenu;
 
-    public void SetInformationMenu()
+    private void Start()
     {
-        InformationMenu.SetActive(true);
+        rtsController = MouseRTSController.instance;
+        rtsController.onInteractableClickedCallBack += UpdateInformationMenu;
+
+        InformationMenu = this.gameObject;
+    }
+
+    public void UpdateInformationMenu()
+    {
+
+
+        if(rtsController.interactableList.Count != 0 && rtsController.interactableList[0].placed)
+        {
+            InformationMenu.SetActive(true);
+        }
+        else
+        {
+            InformationMenu.SetActive(false);
+        }
+
+    }
+
+    private void SetBuildingInformation()
+    {
+
+    }
+
+    private void SetSoldierInformation()
+    {
+
     }
 
     private void SetName(string name)

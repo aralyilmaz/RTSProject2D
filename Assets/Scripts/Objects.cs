@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Entity", menuName = "Entities/Entity")]
-public class Entities : ScriptableObject
+[CreateAssetMenu(fileName = "New Object", menuName = "Objects/Object")]
+public class Objects : ScriptableObject
 {
-    new public string name = "NewEntity";
+    new public string name = "NewObject";
     public Sprite icon = null;
     public bool placed = false;
     public float health = 10f;

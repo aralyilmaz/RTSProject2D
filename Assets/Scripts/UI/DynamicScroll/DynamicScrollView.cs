@@ -14,9 +14,10 @@ public class DynamicScrollView : MonoBehaviour
 
     public Transform content;
 
-    public List<Sprite> spriteList;
-    public List<string> textList;
-    public List<GameObject> gameobjectList;
+    //public List<Sprite> spriteList;
+    //public List<string> textList;
+    //public List<GameObject> gameobjectList;
+    public List<BuildingObject> buildingList;
 
     private int topItemIndex;
     private int botItemIndex;
@@ -71,7 +72,8 @@ public class DynamicScrollView : MonoBehaviour
             tmp = Instantiate(objectToPool, content);
             if(tmp.TryGetComponent<ScrollViewItem>(out item))
             {
-                item.InitItemButton(spriteList[0], textList[i], gameobjectList[i]);
+                //item.InitItemButton(spriteList[0], textList[i], gameobjectList[i]);
+                item.InitItemButton(buildingList[i]);
             }
             //tmp.SetActive(false);
             objectPool.Add(tmp);

@@ -14,6 +14,8 @@ public class Interactable : MonoBehaviour
     //already interacted with the object?
     bool hasInteracted = false;
 
+    public bool placed = false;
+
     public virtual void Interact()
     {
         Debug.Log("Interacting with: " + this.name);

@@ -32,7 +32,6 @@ public class GridBuildingSystem : MonoBehaviour
     private PlacementHandler buildingToBePlaced;
     private Vector3 buildingOldPos;
     private BoundsInt oldArea;
-    private Vector3 offset;
 
     public TileBase whiteTile;
     public TileBase greenTile;
@@ -68,7 +67,7 @@ public class GridBuildingSystem : MonoBehaviour
                 return;
             }
 
-            if (!buildingToBePlaced.placed)
+            if (!buildingToBePlaced.building.placed)
             {
                 Vector3 mousePosition = MouseRTSController.instance.mouseWorldPosition;
                 Vector3Int cellPosition = gridLayout.WorldToCell(mousePosition);
@@ -76,7 +75,8 @@ public class GridBuildingSystem : MonoBehaviour
                 if(buildingOldPos != cellPosition)
                 {
                     //offset = new Vector3(buildingToBePlaced.area.size.x, buildingToBePlaced.area.size.y, 0) * 0.5f;
-                    buildingToBePlaced.transform.position = gridLayout.CellToLocalInterpolated(cellPosition + offset);
+                    buildingToBePlaced.transform.position = gridLayout.CellToLocalInterpolated(cellPosition + buildingToBePlaced.offset);
+                    //buildingToBePlaced.transform.position = gridLayout.CellToLocalInterpolated(cellPosition);
                     //buildingToBePlaced.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPosition + new Vector3(0.5f, 0.5f, 0));
                     buildingOldPos = cellPosition;
                     FollowBuilding();
@@ -148,7 +148,6 @@ public class GridBuildingSystem : MonoBehaviour
             buildingButton = button;
             buildingButton.EnableDisableButton();
             buildingToBePlaced = Instantiate(building, Vector3.one, Quaternion.identity).GetComponent<PlacementHandler>();
-            offset = new Vector3(buildingToBePlaced.area.size.x, buildingToBePlaced.area.size.y, 0) * 0.5f;
             FollowBuilding();
         }
     }
@@ -164,7 +163,8 @@ public class GridBuildingSystem : MonoBehaviour
     {
         ClearArea();
 
-        buildingToBePlaced.area.position = gridLayout.WorldToCell(buildingToBePlaced.transform.position - offset);
+        buildingToBePlaced.area.position = gridLayout.WorldToCell(buildingToBePlaced.transform.position - buildingToBePlaced.offset);
+        
         BoundsInt buildingArea = buildingToBePlaced.area;
 
         TileBase[] buildingAreaArray = GetTilesBlock(buildingArea, mainTileMap);

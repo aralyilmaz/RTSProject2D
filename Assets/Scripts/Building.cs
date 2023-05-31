@@ -3,17 +3,10 @@ using UnityEngine.UI;
 
 public class Building : Interactable
 {
-    public float health = 10f;
-    public bool placed;
-
+    public BuildingObject buildingObject;
+    
     public override void Interact()
     {
         base.Interact();
-
-    }
-
-    public void ActivateInformationMenu()
-    {
-
     }
 }

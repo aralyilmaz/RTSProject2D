@@ -17,14 +17,16 @@ public class MouseRTSController : MonoBehaviour
         instance = this;
     }
 
-    public Vector3 mouseWorldPosition;
+    public Vector3 mouseWorldPosition { get; private set; }
 
     private Camera mainCam;
 
-    [SerializeField]
     private Vector3 startPosition;
 
     public List<Interactable> interactableList;
+
+    public delegate void OnInteractableClicked();
+    public OnInteractableClicked onInteractableClickedCallBack;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +76,11 @@ public class MouseRTSController : MonoBehaviour
         {
             list[i].OnFocused();
         }
+
+        if (onInteractableClickedCallBack != null)
+        {
+            onInteractableClickedCallBack.Invoke();
+        }
     }
 
     void RemoveFocus()
@@ -82,6 +89,11 @@ public class MouseRTSController : MonoBehaviour
         {
             interactableList[i].OnDefocused();
             interactableList.RemoveAt(i);
+        }
+
+        if (onInteractableClickedCallBack != null)
+        {
+            onInteractableClickedCallBack.Invoke();
         }
     }
 }
