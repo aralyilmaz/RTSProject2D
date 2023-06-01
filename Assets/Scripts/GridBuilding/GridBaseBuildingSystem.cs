@@ -9,7 +9,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
     private GridMapManager grid;
 
     [SerializeField]
-    private BuildingObject building;
+    private BuildingObject buildingObject;
 
     public GameObject whiteTile;
     public GameObject redTile;
@@ -36,7 +36,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     public void SetBuilding(BuildingObject building)
     {
-        this.building = building;
+        this.buildingObject = building;
     }
 
     public bool CheckPlacement(List<Vector2Int> gridPositionList)
@@ -53,18 +53,25 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     public bool PlaceBuilding()
     {
-        if (building != null)
+        if (buildingObject != null)
         {
             int x, y;
             grid.gridMap.GetXY(MouseRTSController.instance.mouseWorldPosition, out x, out y);
 
-            List<Vector2Int> gridPositionList = building.GetGridPositionList(new Vector2Int(x, y));
+            List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
 
             Vector3 position = grid.gridMap.GetWorldPosition(x, y);
 
             if (CheckPlacement(gridPositionList))
             {
-                Instantiate(building.prefab, position, Quaternion.identity);
+                Transform placedBuilding = Instantiate(buildingObject.prefab, position, Quaternion.identity);
+
+                if (placedBuilding.TryGetComponent<Building>(out Building buildingInteractable))
+                {
+                    //delay after placing to prevent interacting directly
+                    StartCoroutine(SetPlaced(buildingInteractable, 0.5f));
+                    buildingInteractable.InitBuilding(buildingObject);
+                }
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
                     grid.gridMap.SetValue(gridPosition.x, gridPosition.y, 1);
@@ -123,5 +130,11 @@ public class GridBaseBuildingSystem : MonoBehaviour
                 Destroy(tileArray[x, y], 0.2f);
             }
         }
+    }
+
+    private IEnumerator SetPlaced(Building building, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        building.placed = true;
     }
 }

@@ -9,15 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00ba441105a7dc746ad70be37678afb2, type: 3}
-  m_Name: test1
+  m_Script: {fileID: 11500000, guid: 6ea23c118fb7ba14ebe438450441a2d5, type: 3}
+  m_Name: SoldierObject3
   m_EditorClassIdentifier: 
-  name: test1
+  name: Soldier3
   icon: {fileID: 0}
   health: 10
-  width: 0
-  heigth: 0
+  damage: 2
   color: {r: 1, g: 1, b: 1, a: 1}
-  haveProducts: 0
-  productCount: 0
-  prefab: {fileID: 0}

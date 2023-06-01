@@ -73,6 +73,10 @@ public class BuildingGhost : MonoBehaviour
         if (building != null)
         {
             visual = Instantiate(building.prefab, Vector3.zero, Quaternion.identity);
+            if(visual.TryGetComponent<Building>(out Building buildingInteractable))
+            {
+                buildingInteractable.InitBuilding(building);
+            }
             button.EnableDisableButton();
         }
     }

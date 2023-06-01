@@ -12,7 +12,7 @@ public class PlacementHandler : MonoBehaviour
     void Start()
     {
         building = GetComponent<Building>();
-        Vector3Int size = new Vector3Int(building.buildingObject.width, building.buildingObject.heigth, 1);
+        Vector3Int size = new Vector3Int(building.buildingObject.width, building.buildingObject.height, 1);
         area.size = size;
 
         offset = new Vector3(this.area.size.x, this.area.size.y, 0) * 0.5f;

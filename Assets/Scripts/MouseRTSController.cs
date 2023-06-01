@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseRTSController : MonoBehaviour
 {
@@ -25,13 +26,18 @@ public class MouseRTSController : MonoBehaviour
 
     public List<Interactable> interactableList;
 
-    public delegate void OnInteractableClicked();
-    public OnInteractableClicked onInteractableClickedCallBack;
+    //public delegate void OnInteractableClicked();
+    //public OnInteractableClicked onInteractableClickedCallBack;
+
+    [SerializeField]
+    private Transform selectionAreaTransform;
 
     // Start is called before the first frame update
     void Start()
     {
         mainCam = Camera.main;
+        interactableList = new List<Interactable>();
+        selectionAreaTransform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,21 +45,38 @@ public class MouseRTSController : MonoBehaviour
     {
         CalculateMouseWorldPosition(Input.mousePosition);
 
+        //return if mouse on ui
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            selectionAreaTransform.gameObject.SetActive(false);
+            return;
+        }
+
         //Left mouse button press
         if (Input.GetMouseButtonDown(0))
         {
             //Stop focusing any objects
-            RemoveFocus();
             startPosition = mouseWorldPosition;
+            selectionAreaTransform.gameObject.SetActive(true);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            AdjustSelectedArea();
         }
 
         //Left mouse button release
         if (Input.GetMouseButtonUp(0))
         {
+            selectionAreaTransform.gameObject.SetActive(false);
+
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, mouseWorldPosition);
 
-            //Check if hit interactable
-            foreach(Collider2D collider2D in collider2DArray)
+            //Deselect all
+            RemoveFocus();
+
+            //Check if hit interactable within selection area
+            foreach (Collider2D collider2D in collider2DArray)
             {
                 //Debug.Log(collider2D.name);
                 if(collider2D.TryGetComponent<Interactable>(out Interactable interactable))
@@ -61,7 +84,17 @@ public class MouseRTSController : MonoBehaviour
                     interactableList.Add(interactable);
                 }
             }
-            SetFocus(interactableList);
+
+            //Select the interactables
+            if (interactableList.Count != 0)
+            {
+                InformationMenuManager.instance.UpdateInformationMenu(interactableList[0]);
+                SetFocus(interactableList);
+            }
+            else
+            {
+                InformationMenuManager.instance.CloseInformationMenu();
+            }
         }
     }
 
@@ -77,23 +110,35 @@ public class MouseRTSController : MonoBehaviour
             list[i].OnFocused();
         }
 
-        if (onInteractableClickedCallBack != null)
-        {
-            onInteractableClickedCallBack.Invoke();
-        }
+        //if (onInteractableClickedCallBack != null)
+        //{
+        //    onInteractableClickedCallBack.Invoke();
+        //}
     }
 
-    void RemoveFocus()
+    private void RemoveFocus()
     {
         for (int i = 0; i < interactableList.Count; i++)
         {
             interactableList[i].OnDefocused();
-            interactableList.RemoveAt(i);
         }
 
-        if (onInteractableClickedCallBack != null)
-        {
-            onInteractableClickedCallBack.Invoke();
-        }
+        interactableList.Clear();
+
+        //if (onInteractableClickedCallBack != null)
+        //{
+        //    onInteractableClickedCallBack.Invoke();
+        //}
+    }
+
+    private void AdjustSelectedArea()
+    {
+        Vector3 currentMousePosition = mouseWorldPosition;
+        Vector3 lowerLeftCorner = new Vector3(Mathf.Min(startPosition.x, currentMousePosition.x), Mathf.Min(startPosition.y, currentMousePosition.y));
+        Vector3 upperRightCorner = new Vector3(Mathf.Max(startPosition.x, currentMousePosition.x), Mathf.Max(startPosition.y, currentMousePosition.y));
+
+        selectionAreaTransform.position = lowerLeftCorner;
+        selectionAreaTransform.localScale = upperRightCorner - lowerLeftCorner;
+
     }
 }

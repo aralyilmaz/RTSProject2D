@@ -12,66 +12,31 @@ public class ScrollViewItem : MonoBehaviour
 
     private Button button;
 
-    public GameObject objectToSpawn;
+    BuildingObject buildingObject;
 
-    BuildingObject building;
-
-    public void InitItemButton(Sprite image, string text, GameObject gameObject)
+    public void InitItemButton(BuildingObject building)
     {
+        this.buildingObject = building;
+
         button = GetComponent<Button>();
 
-        if(image != null)
+        if (building.icon != null)
         {
-            button.image.sprite = image;
+            button.image.sprite = building.icon;
         }
 
-        if (text != null)
+        if (building.name != null)
         {
-            buttonText.text = text;
-        }
-
-        if(gameObject != null)
-        {
-            objectToSpawn = gameObject;
+            buttonText.text = building.name;
         }
 
         button.onClick.AddListener(InitBuilding);
     }
 
-    public void InitItemButton(BuildingObject building)
-    {
-        {
-            this.building = building;
-
-            button = GetComponent<Button>();
-
-            if (building.icon != null)
-            {
-                button.image.sprite = building.icon;
-            }
-
-            if (building.name != null)
-            {
-                buttonText.text = building.name;
-            }
-
-            //if (gameObject != null)
-            //{
-            //    objectToSpawn = gameObject;
-            //}
-
-            button.onClick.AddListener(InitBuilding);
-        }
-    }
-
     private void InitBuilding()
     {
-        //if (objectToSpawn != null)
-        //{
-        //    //GridBuildingSystem.instance.InitBuilding(objectToSpawn, this);
-        //}
         BuildingGhost.instance.SetButton(this);
-        BuildingGhost.instance.SetBuilding(building);
+        BuildingGhost.instance.SetBuilding(buildingObject);
         BuildingGhost.instance.CreateVisual();
     }
 

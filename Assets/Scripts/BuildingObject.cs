@@ -7,13 +7,15 @@ public class BuildingObject : ScriptableObject
     new public string name = "NewBuildingObject";
     public Sprite icon = null;
     public float health = 10f;
-    //public Vector3Int size = Vector3Int.one;
     public int width;
-    public int heigth;
+    public int height;
     public Color color = Color.white;
+    public Transform prefab = null;
+
     public bool haveProducts = false;
     public int productCount = 0;
-    public Transform prefab = null;
+    public List<UnitObjects> products;
+    public Transform productPrefab;
 
     public List<Vector2Int> GetGridPositionList(Vector2Int offset)
     {
@@ -21,7 +23,7 @@ public class BuildingObject : ScriptableObject
 
         for(int x = 0; x < width; x++)
         {
-            for(int y = 0; y < heigth; y++)
+            for(int y = 0; y < height; y++)
             {
                 gridPositionList.Add(offset + new Vector2Int(x, y));
             }

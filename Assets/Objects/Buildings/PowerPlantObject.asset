@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ba441105a7dc746ad70be37678afb2, type: 3}
-  m_Name: BarackObject
+  m_Name: PowerPlantObject
   m_EditorClassIdentifier: 
-  name: Barack
-  icon: {fileID: 21300000, guid: 3d787e7376c81494c84554ae811e7dcf, type: 3}
-  health: 100
+  name: PowerPlant
+  icon: {fileID: 21300000, guid: 74909682af9828b4fb5a77f5c89f812d, type: 3}
+  health: 80
   width: 2
-  heigth: 2
+  height: 3
   color: {r: 1, g: 1, b: 1, a: 1}
-  haveProducts: 1
-  productCount: 3
+  haveProducts: 0
+  productCount: 0
   prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}

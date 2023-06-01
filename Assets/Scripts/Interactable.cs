@@ -9,12 +9,19 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     //interactable currently being focused?
-    bool isFocus = false;
+    public bool isFocus = false;
 
     //already interacted with the object?
     bool hasInteracted = false;
 
     public bool placed = false;
+
+    public GridMapManager grid { get; private set; }
+
+    void Start()
+    {
+        grid = GridMapManager.instance;
+    }
 
     public virtual void Interact()
     {

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ba441105a7dc746ad70be37678afb2, type: 3}
+  m_Name: BarackObject
+  m_EditorClassIdentifier: 
+  name: Barack
+  icon: {fileID: 21300000, guid: 3d787e7376c81494c84554ae811e7dcf, type: 3}
+  health: 100
+  width: 2
+  height: 2
+  color: {r: 1, g: 1, b: 1, a: 1}
+  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
+  haveProducts: 1
+  productCount: 3
+  products:
+  - {fileID: 11400000, guid: 63aea22a7a08b4f43a9c8fe1f54c0f62, type: 2}
+  - {fileID: 11400000, guid: 7d427eaff5c8dda409859a78881537e0, type: 2}
+  - {fileID: 11400000, guid: 506d1e83115226e4cbc67d46d1358dd0, type: 2}
+  productPrefab: {fileID: 660012152784258939, guid: 7ecf73d63cb08664bb5ff22a5a41259e, type: 3}
