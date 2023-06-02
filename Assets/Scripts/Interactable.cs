@@ -16,13 +16,6 @@ public class Interactable : MonoBehaviour
 
     public bool placed = false;
 
-    public GridMapManager grid { get; private set; }
-
-    void Start()
-    {
-        grid = GridMapManager.instance;
-    }
-
     public virtual void Interact()
     {
         Debug.Log("Interacting with: " + this.name);

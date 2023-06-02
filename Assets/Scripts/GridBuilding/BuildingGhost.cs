@@ -27,8 +27,6 @@ public class BuildingGhost : MonoBehaviour
 
     private ScrollViewItem button;
 
-    Vector3 targetPosition;
-
     void Start()
     {
         grid = GridMapManager.instance;

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class GridBaseBuildingSystem : MonoBehaviour
 {
-    private GridMapManager grid;
+    private GridMapManager gridManager;
 
     [SerializeField]
     private BuildingObject buildingObject;
@@ -21,8 +21,8 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     void Start()
     {
-        grid = GridMapManager.instance;
-        tileArray = new GameObject[grid.width, grid.height];
+        gridManager = GridMapManager.instance;
+        tileArray = new GameObject[gridManager.width, gridManager.height];
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
     {
         foreach (Vector2Int gridPosition in gridPositionList)
         {
-            if (grid.gridMap.GetValue(gridPosition.x, gridPosition.y) != 0)
+            if (gridManager.gridMap.GetValue(gridPosition.x, gridPosition.y) != 0)
             {
                 return false;
             }
@@ -56,11 +56,11 @@ public class GridBaseBuildingSystem : MonoBehaviour
         if (buildingObject != null)
         {
             int x, y;
-            grid.gridMap.GetXY(MouseRTSController.instance.mouseWorldPosition, out x, out y);
+            gridManager.gridMap.GetXY(MouseRTSController.instance.mouseWorldPosition, out x, out y);
 
             List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
 
-            Vector3 position = grid.gridMap.GetWorldPosition(x, y);
+            Vector3 position = gridManager.gridMap.GetWorldPosition(x, y);
 
             if (CheckPlacement(gridPositionList))
             {
@@ -74,7 +74,8 @@ public class GridBaseBuildingSystem : MonoBehaviour
                 }
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    grid.gridMap.SetValue(gridPosition.x, gridPosition.y, 1);
+                    gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 1); //for building
+                    gridManager.GetTileAtPosition(gridPosition).walkable = false; //for pathfindig
                     //SetTileColor(gridPosition.x, gridPosition.y, 1);
                 }
                 return true;
@@ -114,17 +115,17 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     private void PlaceTile(int x, int y, GameObject tile)
     {
-        if (tile != null)
+        if (tile != null && x >= 0 && y >= 0 && x < gridManager.width && y < gridManager.height)
         {
             if (tileArray[x, y] == null)
             {
-                Vector3 position = grid.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
+                Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
                 tileArray[x, y] = Instantiate(tile, position, Quaternion.identity, tiles);
                 Destroy(tileArray[x, y], 0.2f);
             }
             else
             {
-                Vector3 position = grid.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
+                Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
                 Destroy(tileArray[x, y]);
                 tileArray[x, y] = Instantiate(tile, position, Quaternion.identity, tiles);
                 Destroy(tileArray[x, y], 0.2f);

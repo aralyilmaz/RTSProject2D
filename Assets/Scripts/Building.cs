@@ -43,7 +43,7 @@ public class Building : Interactable
 
     public void ProductionButtons(int buttonNumber)
     {
-        Debug.Log(buttonNumber + " --- " + this.transform.position);
+        //Debug.Log(buttonNumber + " --- " + this.transform.position);
         Transform production;
         production = Instantiate(buildingObject.productPrefab, Vector3.zero, Quaternion.identity);
         if (production.TryGetComponent<Soldier>(out Soldier soldierInteractable))
