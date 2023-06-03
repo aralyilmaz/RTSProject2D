@@ -28,7 +28,6 @@ public class BuildingObject : ScriptableObject
                 gridPositionList.Add(offset + new Vector2Int(x, y));
             }
         }
-
         return gridPositionList;
     }
 }

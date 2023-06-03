@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 /*	
 	This component is for all objects that the player can
@@ -16,10 +17,30 @@ public class Interactable : MonoBehaviour
 
     public bool placed = false;
 
+    public int width = 1;
+    public int height = 1;
+
     public virtual void Interact()
     {
         Debug.Log("Interacting with: " + this.name);
         // This method is meant to be overwritten
+    }
+
+    public virtual Vector2Int GetGridPosition()
+    {
+        Debug.Log("GridPos " + this.name);
+        return new Vector2Int(0, 0);
+    }
+
+    public virtual List<Vector2Int> GetNeighbors()
+    {
+        Debug.Log("Neighbors " + this.name);
+        return null;
+    }
+
+    public virtual void TakeDamage(float damage)
+    {
+        Debug.Log("TakingDamage " + this.name);
     }
 
     void Update()
@@ -29,7 +50,7 @@ public class Interactable : MonoBehaviour
         if (isFocus && !hasInteracted)
         {
             // Interact with the object
-            Interact();
+            //Interact();
             hasInteracted = true;
         }
     }

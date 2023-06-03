@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class GridMapManager : MonoBehaviour
 {
@@ -23,6 +25,11 @@ public class GridMapManager : MonoBehaviour
     public float cellSize = 1f;
     public Vector3 originPosition = new Vector3(-7, -5, 0);
 
+    private readonly List<Vector2Int> Directions = new List<Vector2Int>() {
+            new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0),
+            new Vector2Int(1, 1), new Vector2Int(1, -1), new Vector2Int(-1, -1), new Vector2Int(-1, 1)
+        };
+
     public Dictionary<Vector2, NodeBase> tiles { get; private set; }
 
     void Start()
@@ -33,12 +40,36 @@ public class GridMapManager : MonoBehaviour
         foreach (var tile in tiles.Values) tile.CacheNeighbors();
     }
 
-    private void Update()
+    public List<Vector2Int> GetObjectNeighbors(Vector2Int objectPosition, int objectWidth, int objectHeight)
     {
-        if (Input.GetMouseButtonDown(0))
+        List<Vector2Int> neighbors = new List<Vector2Int>();
+
+        foreach (Vector2Int direction in Directions)
         {
-            //grid.SetValue(MouseRTSController.instance.mouseWorldPosition, 1);
+            for (int x = 0; x < objectWidth; x++)
+            {
+                for (int y = 0; y < objectHeight; y++)
+                {
+                    int neighborX = objectPosition.x + direction.x + x;
+                    int neighborY = objectPosition.y + direction.y + y;
+
+                    if (neighborX >= objectPosition.x && neighborX < objectPosition.x + objectWidth
+                        && neighborY >= objectPosition.y && neighborY < objectPosition.y + objectHeight)
+                    {
+
+                    }
+                    else
+                    {
+                        Vector2Int neighbor = new Vector2Int(neighborX, neighborY);
+                        if (!neighbors.Contains(neighbor))
+                        {
+                            neighbors.Add(neighbor);
+                        }
+                    }
+                }
+            }
         }
+        return neighbors;
     }
 
     private Dictionary<Vector2, NodeBase> GenerateTiles()

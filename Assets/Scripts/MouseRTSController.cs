@@ -26,13 +26,9 @@ public class MouseRTSController : MonoBehaviour
 
     public List<Interactable> interactableList;
 
-    //public delegate void OnInteractableClicked();
-    //public OnInteractableClicked onInteractableClickedCallBack;
-
     [SerializeField]
     private Transform selectionAreaTransform;
 
-    // Start is called before the first frame update
     void Start()
     {
         mainCam = Camera.main;
@@ -40,7 +36,6 @@ public class MouseRTSController : MonoBehaviour
         selectionAreaTransform.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalculateMouseWorldPosition(Input.mousePosition);
@@ -109,11 +104,6 @@ public class MouseRTSController : MonoBehaviour
         {
             list[i].OnFocused();
         }
-
-        //if (onInteractableClickedCallBack != null)
-        //{
-        //    onInteractableClickedCallBack.Invoke();
-        //}
     }
 
     private void RemoveFocus()
@@ -124,11 +114,6 @@ public class MouseRTSController : MonoBehaviour
         }
 
         interactableList.Clear();
-
-        //if (onInteractableClickedCallBack != null)
-        //{
-        //    onInteractableClickedCallBack.Invoke();
-        //}
     }
 
     private void AdjustSelectedArea()
@@ -139,6 +124,5 @@ public class MouseRTSController : MonoBehaviour
 
         selectionAreaTransform.position = lowerLeftCorner;
         selectionAreaTransform.localScale = upperRightCorner - lowerLeftCorner;
-
     }
 }

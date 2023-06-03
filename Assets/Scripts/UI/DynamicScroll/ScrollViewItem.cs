@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
-using static System.Net.Mime.MediaTypeNames;
 
 [RequireComponent(typeof(Button))]
 public class ScrollViewItem : MonoBehaviour

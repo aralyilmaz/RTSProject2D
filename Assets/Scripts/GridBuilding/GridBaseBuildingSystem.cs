@@ -23,16 +23,9 @@ public class GridBaseBuildingSystem : MonoBehaviour
     {
         gridManager = GridMapManager.instance;
         tileArray = new GameObject[gridManager.width, gridManager.height];
-    }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        PlaceBuilding();
-    //    }
-    //}
+        InformationMenuManager.instance.OnBuildingDestroyButton += ClearTile;
+    }
 
     public void SetBuilding(BuildingObject building)
     {
@@ -95,7 +88,6 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
             case 1:
                 //Red
-                //DestroyOldTile();
                 PlaceTile(x, y, redTile);
                 break;
 
@@ -137,5 +129,17 @@ public class GridBaseBuildingSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         building.placed = true;
+    }
+    
+    public void ClearTile(object sender, InformationMenuManager.OnBuildingDestroyButtonEventArgs e)
+    {
+        gridManager.gridMap.GetXY(e.buildingPosition, out int x, out int y);
+        List<Vector2Int> gridPositionList = e.buildingObject.GetGridPositionList(new Vector2Int(x, y));
+
+        foreach (Vector2Int gridPosition in gridPositionList)
+        {
+            gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
+            gridManager.GetTileAtPosition(gridPosition).walkable = true; //for pathfindig
+        }
     }
 }

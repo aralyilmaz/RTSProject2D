@@ -68,7 +68,7 @@ public class BuildingGhost : MonoBehaviour
     {
         DestroyVisual();
 
-        if (building != null)
+        if (building != null && building.prefab != null)
         {
             visual = Instantiate(building.prefab, Vector3.zero, Quaternion.identity);
             if(visual.TryGetComponent<Building>(out Building buildingInteractable))

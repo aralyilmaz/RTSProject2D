@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +15,36 @@ public class Building : Interactable
 
     Vector3 offset;
 
+    public float health;
+
+    public List<Vector2Int> neighbors { get; private set; }
+    private Vector3 spawnLocation;
+
+
     public override void Interact()
     {
         base.Interact();
+    }
+
+    public override Vector2Int GetGridPosition()
+    {
+        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        return new Vector2Int(x, y);
+    }
+
+    public override List<Vector2Int> GetNeighbors()
+    {
+        return neighbors;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        health = health - damage;
+        if(health <= 0)
+        {
+            Debug.Log("Die" + this.name);
+            Die();
+        }
     }
 
     //Create building and adjust pivots to make it fit into tiles
@@ -38,19 +66,62 @@ public class Building : Interactable
                 buildingCollider.offset = offset;
             }
             text.text = buildingObject.name;
+            health = buildingObject.health;
+            width = buildingObject.width;
+            height = buildingObject.height;
+
+            CacheNeighbors();
         }
     }
 
     public void ProductionButtons(int buttonNumber)
     {
-        //Debug.Log(buttonNumber + " --- " + this.transform.position);
-        Transform production;
-        production = Instantiate(buildingObject.productPrefab, Vector3.zero, Quaternion.identity);
-        if (production.TryGetComponent<Soldier>(out Soldier soldierInteractable))
+        //Check for suitable spawn position
+        if (CheckUnitSpawnArea())
         {
-            soldierInteractable.InitSoldier(buildingObject.products[buttonNumber]);
-            soldierInteractable.placed = true;
+            Transform production;
+            production = Instantiate(buildingObject.productPrefab, spawnLocation, Quaternion.identity);
+            if (production.TryGetComponent<Soldier>(out Soldier soldierInteractable))
+            {
+                soldierInteractable.InitSoldier(buildingObject.products[buttonNumber]);
+                soldierInteractable.placed = true;
+            }
         }
     }
 
+    private bool CheckUnitSpawnArea()
+    {
+        foreach (Vector2Int neighbor in neighbors)
+        {
+            if (GridMapManager.instance.gridMap.GetValue(neighbor.x, neighbor.y) == 0)
+            {
+                spawnLocation = GridMapManager.instance.gridMap.GetWorldPosition(neighbor.x, neighbor.y);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void CacheNeighbors()
+    {
+        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        neighbors = GridMapManager.instance.GetObjectNeighbors(new Vector2Int(x, y), width, height);
+    }
+
+    private void Die()
+    {
+        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
+
+        foreach (Vector2Int gridPosition in gridPositionList)
+        {
+            GridMapManager.instance.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
+            NodeBase node = GridMapManager.instance.GetTileAtPosition(gridPosition); //for pathfindig
+            if (node != null)
+            {
+                node.walkable = true; //for pathfindig
+            }
+        }
+        Destroy(this.gameObject);
+    }
 }

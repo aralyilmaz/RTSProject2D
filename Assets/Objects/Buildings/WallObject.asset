@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wall
   icon: {fileID: 0}
-  health: 10
-  width: 0
-  heigth: 0
+  health: 50
+  width: 1
+  height: 1
   color: {r: 1, g: 1, b: 1, a: 1}
+  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
   haveProducts: 0
   productCount: 0
-  prefab: {fileID: 0}
+  products: []
+  productPrefab: {fileID: 0}

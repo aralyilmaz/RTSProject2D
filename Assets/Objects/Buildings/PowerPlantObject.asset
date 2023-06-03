@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: PowerPlant
   icon: {fileID: 21300000, guid: 74909682af9828b4fb5a77f5c89f812d, type: 3}
-  health: 80
+  health: 50
   width: 2
   height: 3
   color: {r: 1, g: 1, b: 1, a: 1}
+  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
   haveProducts: 0
   productCount: 0
-  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
+  products: []
+  productPrefab: {fileID: 0}
