@@ -50,7 +50,7 @@ public class MouseRTSController : MonoBehaviour
         //return if mouse on ui
         if (EventSystem.current.IsPointerOverGameObject())
         {
-            selectionAreaTransform.gameObject.SetActive(false);
+            //selectionAreaTransform.gameObject.SetActive(false);
             return;
         }
 

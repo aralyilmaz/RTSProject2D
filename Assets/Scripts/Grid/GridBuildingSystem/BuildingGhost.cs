@@ -18,14 +18,13 @@ public class BuildingGhost : MonoBehaviour
         instance = this;
     }
 
-    [SerializeField]
-    private GridBaseBuildingSystem buildingSystem;
+    [SerializeField] private GridBaseBuildingSystem buildingSystem;
 
     private GridMapManager grid;
     private Transform visual;
     private BuildingObject building;
 
-    private ScrollViewItem button;
+    [SerializeField] private DynamicScrollView buttons;
 
     void Start()
     {
@@ -48,14 +47,16 @@ public class BuildingGhost : MonoBehaviour
                 if (buildingSystem.PlaceBuilding())
                 {
                     DestroyVisual();
-                    button.EnableDisableButton();
+                    //button.EnableDisableButton(false);
+                    buttons.EnableDisableAllButtons(true);
                 }
             }
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             DestroyVisual();
-            button.EnableDisableButton();
+            //button.EnableDisableButton();
+            buttons.EnableDisableAllButtons(true);
         }
     }
 
@@ -75,7 +76,8 @@ public class BuildingGhost : MonoBehaviour
             {
                 buildingInteractable.InitBuilding(building);
             }
-            button.EnableDisableButton();
+            //button.EnableDisableButton();
+            buttons.EnableDisableAllButtons(false);
         }
     }
 
@@ -93,10 +95,10 @@ public class BuildingGhost : MonoBehaviour
         this.building = building;
     }
 
-    public void SetButton(ScrollViewItem button)
-    {
-        this.button = button;
-    }
+    //public void SetButton(ScrollViewItem button)
+    //{
+    //    this.button = button;
+    //}
 
     public void FollowMouse()
     {

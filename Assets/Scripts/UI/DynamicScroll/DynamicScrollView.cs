@@ -157,4 +157,15 @@ public class DynamicScrollView : MonoBehaviour
             }
         }
     }
+
+    public void EnableDisableAllButtons(bool enabled)
+    {
+        foreach(GameObject viewItemObject in objectPool)
+        {
+            if (viewItemObject.TryGetComponent<ScrollViewItem>(out ScrollViewItem item))
+            {
+                item.EnableDisableButton(enabled);
+            }
+        }
+    }
 }

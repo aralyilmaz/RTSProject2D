@@ -44,11 +44,6 @@ public class Soldier : Interactable
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-
         if (attackTarget == null)
         {
             if (isAttackCoroutineRunning)
@@ -119,7 +114,7 @@ public class Soldier : Interactable
         width = 1;
         height = 1;
 
-        attackCooldown = 2f;
+        attackCooldown = 1f;
 
         if (soldierObject != null)
         {
