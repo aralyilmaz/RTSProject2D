@@ -82,7 +82,8 @@ public class InformationMenuManager : MonoBehaviour
         menuNameText.text = building.buildingObject.name;
         menuImage.sprite = building.buildingObject.icon;
 
-        statText.text = "HP: " + building.buildingObject.health.ToString() + "/" + building.health.ToString();
+        //statText.text = "HP: " + building.buildingObject.health.ToString() + "/" + building.health.ToString();
+        statText.text = "HP: " + building.health.ToString() + "/" + building.buildingObject.health.ToString();
 
         InitDestroyBuildingButton(destroyButton, building);
 

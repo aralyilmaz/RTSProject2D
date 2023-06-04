@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(HealthBar))]
 public class Building : Interactable
 {
     public BuildingObject buildingObject;
@@ -20,12 +20,13 @@ public class Building : Interactable
     public List<Vector2Int> neighbors { get; private set; }
     private Vector3 spawnLocation;
 
-    [SerializeField]
-    private SpriteRenderer gfxRenderer;
+    [SerializeField] private SpriteRenderer gfxRenderer;
 
-    public override void Interact()
+    [SerializeField] private HealthBar healthBar;
+
+    private void Start()
     {
-        base.Interact();
+        healthBar = GetComponent<HealthBar>();
     }
 
     public override Vector2Int GetGridPosition()
@@ -42,9 +43,11 @@ public class Building : Interactable
     public override void TakeDamage(float damage)
     {
         health = health - damage;
-        if(health <= 0)
+        healthBar.SetHealthBarVisible(true);
+        healthBar.SetSize(health / buildingObject.health);
+        if (health <= 0)
         {
-            Debug.Log("Die" + this.name);
+            //Debug.Log("Die " + this.name);
             Die();
         }
     }
@@ -114,6 +117,8 @@ public class Building : Interactable
 
     public void Die()
     {
+        healthBar.SetHealthBarVisible(false);
+
         GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
         List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
 

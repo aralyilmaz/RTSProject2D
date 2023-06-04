@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(UnitMotor))]
+[RequireComponent(typeof(UnitMotor), typeof(HealthBar))]
 public class Soldier : Interactable
 {
     private Vector3 offset;
@@ -33,11 +32,13 @@ public class Soldier : Interactable
 
     [SerializeField] private SpriteRenderer unitRenderer;
 
+    [SerializeField] private HealthBar healthBar;
+
     private bool hasOrder = false;
 
     private void Start()
     {
-        SetSelectedVisible(false);
+        healthBar = GetComponent<HealthBar>();
         motor = GetComponent<UnitMotor>();
         pathList = new List<NodeBase>();
     }
@@ -97,6 +98,8 @@ public class Soldier : Interactable
     public override void TakeDamage(float damage)
     {
         health = health - damage;
+        healthBar.SetHealthBarVisible(true);
+        healthBar.SetSize(health / soldierObject.health);
         if (health <= 0)
         {
             //Debug.Log("Die" + this.name);
@@ -138,6 +141,8 @@ public class Soldier : Interactable
 
             SetStandingOnTile(1);
             SetStandingOnNodeWalkable(false);
+
+            SetSelectedVisible(false);
         }
     }
 
@@ -225,9 +230,9 @@ public class Soldier : Interactable
             if(pathList.Count == 0)
             {
                 pathList = null;
-                isMoving = false;
                 SetStandingOnTile(1);
                 SetStandingOnNodeWalkable(false);
+                isMoving = false;
             }
         }
         motor.SetTargetPosition(targetPosition);
@@ -269,8 +274,8 @@ public class Soldier : Interactable
             return;
         }
 
-        //Check if in attack range
-        if (CheckAttackRange())
+        //Check if in attack range and not moving
+        if (!isMoving && CheckAttackRange())
         {
             //in range then attack
             if (!isAttackCoroutineRunning)
@@ -335,6 +340,7 @@ public class Soldier : Interactable
         hasOrder = false;
         SetStandingOnTile(0);
         SetStandingOnNodeWalkable(true);
+        healthBar.SetHealthBarVisible(false);
         if (this.gameObject != null)
         {
             Destroy(this.gameObject);
