@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ba441105a7dc746ad70be37678afb2, type: 3}
-  m_Name: WallObject
+  m_Name: RockObject
   m_EditorClassIdentifier: 
-  name: WoodenWall
-  icon: {fileID: 646345748, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
-  health: 60
+  name: Rock
+  icon: {fileID: 555730555, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
+  health: 25
   width: 1
   height: 1
   color: {r: 1, g: 1, b: 1, a: 1}

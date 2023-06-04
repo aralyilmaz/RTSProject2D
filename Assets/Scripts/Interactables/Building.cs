@@ -20,6 +20,8 @@ public class Building : Interactable
     public List<Vector2Int> neighbors { get; private set; }
     private Vector3 spawnLocation;
 
+    [SerializeField]
+    private SpriteRenderer gfxRenderer;
 
     public override void Interact()
     {
@@ -70,6 +72,8 @@ public class Building : Interactable
             width = buildingObject.width;
             height = buildingObject.height;
 
+            gfxRenderer.sprite = buildingObject.icon;
+
             CacheNeighbors();
         }
     }
@@ -108,7 +112,7 @@ public class Building : Interactable
         neighbors = GridMapManager.instance.GetObjectNeighbors(new Vector2Int(x, y), width, height);
     }
 
-    private void Die()
+    public void Die()
     {
         GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
         List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
@@ -122,6 +126,10 @@ public class Building : Interactable
                 node.walkable = true; //for pathfindig
             }
         }
-        Destroy(this.gameObject);
+
+        if (this.gameObject != null)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

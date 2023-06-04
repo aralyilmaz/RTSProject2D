@@ -18,8 +18,6 @@ public class GridBaseBuildingSystem : MonoBehaviour
     {
         gridManager = GridMapManager.instance;
         tileArray = new GameObject[gridManager.width, gridManager.height];
-
-        InformationMenuManager.instance.OnBuildingDestroyButton += ClearTile;
     }
 
     public void SetBuilding(BuildingObject building)
@@ -126,15 +124,15 @@ public class GridBaseBuildingSystem : MonoBehaviour
         building.placed = true;
     }
     
-    public void ClearTile(object sender, InformationMenuManager.OnBuildingDestroyButtonEventArgs e)
-    {
-        gridManager.gridMap.GetXY(e.buildingPosition, out int x, out int y);
-        List<Vector2Int> gridPositionList = e.buildingObject.GetGridPositionList(new Vector2Int(x, y));
+    //public void ClearTile(object sender, InformationMenuManager.OnBuildingDestroyButtonEventArgs e)
+    //{
+    //    gridManager.gridMap.GetXY(e.buildingPosition, out int x, out int y);
+    //    List<Vector2Int> gridPositionList = e.buildingObject.GetGridPositionList(new Vector2Int(x, y));
 
-        foreach (Vector2Int gridPosition in gridPositionList)
-        {
-            gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
-            gridManager.GetTileAtPosition(gridPosition).walkable = true; //for pathfindig
-        }
-    }
+    //    foreach (Vector2Int gridPosition in gridPositionList)
+    //    {
+    //        gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
+    //        gridManager.GetTileAtPosition(gridPosition).walkable = true; //for pathfindig
+    //    }
+    //}
 }

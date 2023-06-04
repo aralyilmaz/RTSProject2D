@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BigHouseObject
   m_EditorClassIdentifier: 
   name: BigHouse
-  icon: {fileID: 0}
+  icon: {fileID: 2019348936, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
   health: 60
-  width: 4
+  width: 3
   height: 4
   color: {r: 1, g: 1, b: 1, a: 1}
   prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}

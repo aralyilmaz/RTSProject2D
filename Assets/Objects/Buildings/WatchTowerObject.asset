@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: WatchTowerObject
   m_EditorClassIdentifier: 
   name: WatchTower
-  icon: {fileID: 0}
-  health: 10
-  width: 0
-  heigth: 0
+  icon: {fileID: -546337691, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
+  health: 50
+  width: 1
+  height: 1
   color: {r: 1, g: 1, b: 1, a: 1}
+  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
   haveProducts: 0
   productCount: 0
-  prefab: {fileID: 0}
+  products: []
+  productPrefab: {fileID: 0}

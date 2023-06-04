@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq; //for list.any()
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PathfindingManager : MonoBehaviour
@@ -26,6 +25,7 @@ public class PathfindingManager : MonoBehaviour
         gridManager = GridMapManager.instance;
     }
 
+    //For using pathfinding with world position
     public List<NodeBase> FindPath(Vector3 startPosition, Vector3 targetPosition)
     {
         //Debug.Log("Vector3start: " + startPosition + " target: " + targetPosition);
@@ -45,6 +45,7 @@ public class PathfindingManager : MonoBehaviour
         return FindPath(startGrid, targetGrid);
     }
 
+    //For using pathfinding with grid position
     public List<NodeBase> FindPath(Vector2 startGrid, Vector2 targetGrid)
     {
         NodeBase startNode = gridManager.GetTileAtPosition(startGrid);
@@ -56,16 +57,17 @@ public class PathfindingManager : MonoBehaviour
         return null;
     }
 
+    //A*
     public List<NodeBase> FindPath(NodeBase startNode, NodeBase targetNode)
     {
-        //Debug.Log("start: " + startNode.coords + " target: " + targetNode.coords);
-        List<NodeBase> toSearch = new List<NodeBase>() { startNode };
+        List<NodeBase> nodesToSearch = new List<NodeBase>() { startNode };
         List<NodeBase> searched = new List<NodeBase>();
 
-        while (toSearch.Any())
+        while (nodesToSearch.Any())
         {
-            NodeBase currentNode = toSearch[0];
-            foreach (NodeBase node in toSearch)
+            //find current best F cost node
+            NodeBase currentNode = nodesToSearch[0];
+            foreach (NodeBase node in nodesToSearch)
             {
                 if (node.F < currentNode.F || node.F == currentNode.F && node.H < currentNode.H)
                 {
@@ -74,15 +76,16 @@ public class PathfindingManager : MonoBehaviour
             }
 
             searched.Add(currentNode);
-            toSearch.Remove(currentNode);
+            nodesToSearch.Remove(currentNode);
 
             if (currentNode == targetNode)
             {
-                var currentPathTile = targetNode;
-                var path = new List<NodeBase>();
-                var count = 100;
+                NodeBase currentPathTile = targetNode;
+                List<NodeBase> path = new List<NodeBase>();
+                int count = 100;
                 while (currentPathTile != startNode)
                 {
+                    //when path found retrace the path and add it to list
                     path.Add(currentPathTile);
                     currentPathTile = currentPathTile.connection;
                     count--;
@@ -93,12 +96,14 @@ public class PathfindingManager : MonoBehaviour
                 return path;
             }
 
+            //Loop all walkable and not searched neighbor nodes
             foreach (var neighbor in currentNode.neighbors.Where(t => t.walkable && !searched.Contains(t)))
             {
-                var inSearch = toSearch.Contains(neighbor);
+                bool inSearch = nodesToSearch.Contains(neighbor);
 
-                var costToNeighbor = currentNode.G + currentNode.GetDistance(neighbor.coords);
+                float costToNeighbor = currentNode.G + currentNode.GetDistance(neighbor.coords);
 
+                //if not searched then search or if found a better path to node update the G cost
                 if (!inSearch || costToNeighbor < neighbor.G)
                 {
                     neighbor.SetG(costToNeighbor);
@@ -107,7 +112,7 @@ public class PathfindingManager : MonoBehaviour
                     if (!inSearch)
                     {
                         neighbor.SetH(neighbor.GetDistance(targetNode.coords));
-                        toSearch.Add(neighbor);
+                        nodesToSearch.Add(neighbor);
                     }
                 }
             }

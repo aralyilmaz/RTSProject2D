@@ -9,17 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00ba441105a7dc746ad70be37678afb2, type: 3}
-  m_Name: test5
+  m_Script: {fileID: 11500000, guid: 6ea23c118fb7ba14ebe438450441a2d5, type: 3}
+  m_Name: PriestObject2
   m_EditorClassIdentifier: 
-  name: test5
-  icon: {fileID: 0}
+  name: Priest2
+  icon: {fileID: -532863068, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
   health: 10
-  width: 0
-  height: 0
+  damage: 15
   color: {r: 1, g: 1, b: 1, a: 1}
-  prefab: {fileID: 850652739410719813, guid: 1705ffbe89fec4d47b58fb831885109e, type: 3}
-  haveProducts: 0
-  productCount: 0
-  products: []
-  productPrefab: {fileID: 0}

@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+//Helper class for A* pathfinding
 public class NodeBase
 {
     public List<NodeBase> neighbors { get; protected set; }
+
+    //for retracing the path once path found
     public NodeBase connection { get; private set; }
 
     //distance from start node
@@ -58,12 +61,12 @@ public class NodeBase
 
     public float GetDistance(Vector2 other)
     {
-        var dist = new Vector2Int(Mathf.Abs((int)coords.x - (int)other.x), Mathf.Abs((int)coords.y - (int)other.y));
+        Vector2Int dist = new Vector2Int(Mathf.Abs((int)coords.x - (int)other.x), Mathf.Abs((int)coords.y - (int)other.y));
 
-        var lowest = Mathf.Min(dist.x, dist.y);
-        var highest = Mathf.Max(dist.x, dist.y);
+        int lowest = Mathf.Min(dist.x, dist.y);
+        int highest = Mathf.Max(dist.x, dist.y);
 
-        var horizontalMovesRequired = highest - lowest;
+        int horizontalMovesRequired = highest - lowest;
 
         return lowest * 14 + horizontalMovesRequired * 10;
     }

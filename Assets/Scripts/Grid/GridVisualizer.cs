@@ -10,13 +10,13 @@ public class GridVisualizer : MonoBehaviour
     [SerializeField]
     private Transform tiles;
 
+    [SerializeField]
     GridMapManager gridManager;
 
     private Vector3 offset = Vector3.one * 0.5f;
 
     private void Start()
     {
-        gridManager = GridMapManager.instance;
         offset.z = 0f;
     }
 

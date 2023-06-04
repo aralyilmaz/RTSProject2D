@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class MouseRTSController : MonoBehaviour
 {
@@ -28,6 +29,12 @@ public class MouseRTSController : MonoBehaviour
 
     [SerializeField]
     private Transform selectionAreaTransform;
+
+    public event EventHandler<OnInteractableSelectedEventArgs> OnInteractableSelected;
+    public class OnInteractableSelectedEventArgs : EventArgs
+    {
+        public Interactable interactable;
+    }
 
     void Start()
     {
@@ -83,12 +90,12 @@ public class MouseRTSController : MonoBehaviour
             //Select the interactables
             if (interactableList.Count != 0)
             {
-                InformationMenuManager.instance.UpdateInformationMenu(interactableList[0]);
+                OnInteractableSelected?.Invoke(this, new OnInteractableSelectedEventArgs { interactable = interactableList[0] });
                 SetFocus(interactableList);
             }
             else
             {
-                InformationMenuManager.instance.CloseInformationMenu();
+                OnInteractableSelected?.Invoke(this, new OnInteractableSelectedEventArgs { interactable = null });
             }
         }
     }

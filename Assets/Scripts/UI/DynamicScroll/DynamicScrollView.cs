@@ -37,11 +37,9 @@ public class DynamicScrollView : MonoBehaviour
     private void Start()
     {
         scrollRect = GetComponent<ScrollRect>();
-        //if (spriteList.Count != poolSize && textList.Count != poolSize && gameobjectList.Count != poolSize)
-        //{
-        //    Debug.Log("List size do not match");
-        //    return;
-        //}
+
+        poolSize = buildingList.Count;
+
         InitScrollView();
     }
 

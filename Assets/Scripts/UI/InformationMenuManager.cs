@@ -5,18 +5,6 @@ using System;
 
 public class InformationMenuManager : MonoBehaviour
 {
-    public static InformationMenuManager instance { get; private set; }
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of InformationMenuManager found!");
-            return;
-        }
-        instance = this;
-    }
-
     [SerializeField]
     private TextMeshProUGUI menuNameText;
 
@@ -38,33 +26,38 @@ public class InformationMenuManager : MonoBehaviour
     [SerializeField]
     private Button[] productionButtons;
 
-    //Events for destroying from information menu
-    public event EventHandler OnUnitDestroyButton;
-
-    public event EventHandler<OnBuildingDestroyButtonEventArgs> OnBuildingDestroyButton;
-    public class OnBuildingDestroyButtonEventArgs : EventArgs
-    {
-        public BuildingObject buildingObject;
-        public Vector3 buildingPosition;
-    }
-
     private void Start()
     {
         informationMenu = this.gameObject;
         informationMenu.SetActive(false);
+
+        MouseRTSController.instance.OnInteractableSelected += HandleInteractableSelected;
     }
 
     public void CloseInformationMenu()
     {
+        destroyButton.onClick.RemoveAllListeners();
         informationMenu.SetActive(false);
+    }
+
+    public void HandleInteractableSelected(object sender, MouseRTSController.OnInteractableSelectedEventArgs eventArgs)
+    {
+        if (eventArgs.interactable != null)
+        {
+            UpdateInformationMenu(eventArgs.interactable);
+        }
+        else
+        {
+            CloseInformationMenu();
+        }
     }
 
     public void UpdateInformationMenu(Interactable interactable)
     {
         //If any interactable selected activate information menu
+        destroyButton.onClick.RemoveAllListeners();
         if (interactable.placed)
         {
-            destroyButton.onClick.RemoveAllListeners();
             informationMenu.SetActive(true);
             if (interactable is Building)
             {
@@ -110,12 +103,14 @@ public class InformationMenuManager : MonoBehaviour
         for (int i = 0; i < productionButtons.Length; i++)
         {
             productionButtons[i].enabled = false;
+            productionButtons[i].gameObject.SetActive(false);
             productionButtons[i].onClick.RemoveAllListeners();
         }
 
         for (int i = 0; i < buttonCount; i++)
         {
             productionButtons[i].enabled = true;
+            productionButtons[i].gameObject.SetActive(true);
             InitProductionButton(productionButtons[i], i, building);
         }
     }
@@ -157,21 +152,13 @@ public class InformationMenuManager : MonoBehaviour
 
     private void DestroyBuildingButton(Building building)
     {
-        OnBuildingDestroyButton?.Invoke(this, 
-            new OnBuildingDestroyButtonEventArgs {
-            buildingObject = building.buildingObject,
-            buildingPosition = building.transform.position});
-
-        Destroy(building.gameObject, 0.1f);
-        destroyButton.onClick.RemoveAllListeners();
+        building.Die();
         CloseInformationMenu();
     }
 
     private void DestroySoldierButton(Soldier soldier)
     {
-        OnUnitDestroyButton?.Invoke(this, EventArgs.Empty);
-        Destroy(soldier.gameObject, 0.1f);
-        destroyButton.onClick.RemoveAllListeners();
+        soldier.Die();
         CloseInformationMenu();
     }
 

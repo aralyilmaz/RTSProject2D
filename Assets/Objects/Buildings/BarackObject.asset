@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BarackObject
   m_EditorClassIdentifier: 
   name: Barack
-  icon: {fileID: 21300000, guid: 3d787e7376c81494c84554ae811e7dcf, type: 3}
+  icon: {fileID: -362142800, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
   health: 100
   width: 4
   height: 4

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SoldierObject1
   m_EditorClassIdentifier: 
   name: Soldier1
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: -597567843, guid: d0253407e4d8ac74883e8de98da0eb3a, type: 3}
   health: 10
-  damage: 10
+  damage: 2
   color: {r: 1, g: 1, b: 1, a: 1}

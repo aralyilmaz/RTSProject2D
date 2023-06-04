@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,13 +31,15 @@ public class Soldier : Interactable
     private Coroutine attackCoroutine;
     private bool isAttackCoroutineRunning = false;
 
+    [SerializeField] private SpriteRenderer unitRenderer;
+
+    private bool hasOrder = false;
+
     private void Start()
     {
         SetSelectedVisible(false);
         motor = GetComponent<UnitMotor>();
         pathList = new List<NodeBase>();
-
-        InformationMenuManager.instance.OnUnitDestroyButton += UnitDestroy;
     }
 
     private void Update()
@@ -135,6 +136,11 @@ public class Soldier : Interactable
             }
             selectedGameObject.transform.localPosition = graphics.localPosition;
 
+            if(soldierObject.icon != null)
+            {
+                unitRenderer.sprite = soldierObject.icon;
+            }
+
             SetStandingOnTile(1);
             SetStandingOnNodeWalkable(false);
         }
@@ -147,18 +153,22 @@ public class Soldier : Interactable
 
     private void DoOrder()
     {
-        if (isAttacking)
+        if (hasOrder)
         {
-            AttackToObject();
-        }
-        else
-        {
-            MoveToPath();
+            if (isAttacking)
+            {
+                AttackToObject();
+            }
+            else
+            {
+                MoveToPath();
+            }
         }
     }
 
     public void MoveOrder(Vector3 mousePosition)
     {
+        hasOrder = true;
         pathList = null;
         //find the shortest path with A*
         pathList = PathfindingManager.instance.FindPath(graphics.transform.position, mousePosition);
@@ -249,14 +259,9 @@ public class Soldier : Interactable
         gridManager.gridMap.SetValue(graphics.transform.position, value);
     }
 
-    public void UnitDestroy(object sender, EventArgs e)
-    {
-        SetStandingOnTile(1);
-        SetStandingOnNodeWalkable(true);
-    }
-
     private void AttackOrder(Interactable attackTarget)
     {
+        hasOrder = true;
         this.attackTarget = attackTarget;
         //Get neighbor grids of attack target
         targetNeighbors = attackTarget.GetNeighbors();
@@ -330,10 +335,14 @@ public class Soldier : Interactable
         }
     }
 
-    private void Die()
+    public void Die()
     {
+        hasOrder = false;
         SetStandingOnTile(0);
         SetStandingOnNodeWalkable(true);
-        Destroy(this.gameObject);
+        if (this.gameObject != null)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
