@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.UIElements;
 
 public class GridBaseBuildingSystem : MonoBehaviour
 {
@@ -15,9 +13,6 @@ public class GridBaseBuildingSystem : MonoBehaviour
     public GameObject redTile;
     public GameObject greenTile;
     private GameObject[,] tileArray;
-
-    [SerializeField]
-    Transform tiles;
 
     void Start()
     {
@@ -112,14 +107,14 @@ public class GridBaseBuildingSystem : MonoBehaviour
             if (tileArray[x, y] == null)
             {
                 Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
-                tileArray[x, y] = Instantiate(tile, position, Quaternion.identity, tiles);
+                tileArray[x, y] = Instantiate(tile, position, Quaternion.identity);
                 Destroy(tileArray[x, y], 0.2f);
             }
             else
             {
                 Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
                 Destroy(tileArray[x, y]);
-                tileArray[x, y] = Instantiate(tile, position, Quaternion.identity, tiles);
+                tileArray[x, y] = Instantiate(tile, position, Quaternion.identity);
                 Destroy(tileArray[x, y], 0.2f);
             }
         }

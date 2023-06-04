@@ -9,7 +9,7 @@ public class UnitMotor : MonoBehaviour
     private Vector3 velocity;
     private Vector3 targetPosition;
 
-    private void Update()
+    private void FixedUpdate()
     {
         PerformMovement();
     }

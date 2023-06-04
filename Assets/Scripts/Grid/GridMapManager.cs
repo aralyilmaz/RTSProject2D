@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class GridMapManager : MonoBehaviour
 {
@@ -35,9 +33,14 @@ public class GridMapManager : MonoBehaviour
     void Start()
     {
         gridMap = new GridMap(width, height, cellSize, originPosition);
-        tiles = GenerateTiles();
 
+        tiles = GenerateTiles();
         foreach (var tile in tiles.Values) tile.CacheNeighbors();
+
+        if(TryGetComponent<GridVisualizer>(out GridVisualizer visualizer))
+        {
+            visualizer.VisualizeGrid(width, height);
+        }
     }
 
     public List<Vector2Int> GetObjectNeighbors(Vector2Int objectPosition, int objectWidth, int objectHeight)
