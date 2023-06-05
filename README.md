@@ -14,6 +14,6 @@ You can select the soldiers with left mouse button and see that they have a blue
 Selected soldiers can receive orders by right mouse button for moving or attacking.
 
 # TODO
-Pathfinding should be optimized.
-Unit count should be writed when multiple units are in one grid.
+Pathfinding should be optimized.__
+Unit count should be writed when multiple units are in one grid.__
 Opening and closing menus should be added.
