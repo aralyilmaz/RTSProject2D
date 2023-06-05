@@ -1,6 +1,8 @@
 # RTSProject2D
  A 2D real time strategy project I made with Unity.
  
+ ![RTSProject2D 5 06 2023 10_29_20](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/c7a81e3a-a1ce-4d02-a83b-9aa9426462d5)
+ 
 ![RTSProject2D 5 06 2023 10_24_27](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/a246d9f8-5d6a-41fd-b457-cf2595bc9076)
 
 # Controls
