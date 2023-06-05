@@ -1,5 +1,7 @@
 # RTSProject2D
- A 2d real time strategy project i made with Unity
+ A 2D real time strategy project I made with Unity.
+ 
+![RTSProject2D 5 06 2023 10_24_27](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/a246d9f8-5d6a-41fd-b457-cf2595bc9076)
 
 # Controls
 WASD for moving camera.
@@ -9,4 +11,9 @@ Selected building will follow your mouse you can left click to place the buildin
 
 Some buildings can produce soldiers and other productions.
 You can select the soldiers with left mouse button and see that they have a blue aura that shows that they are selected.
-Selected soldiers can receive orders by right mouse button for moving or attacking
+Selected soldiers can receive orders by right mouse button for moving or attacking.
+
+# TODO
+Pathfinding should be optimized.
+Unit count should be writed when multiple units are in one grid.
+Opening and closing menus should be added.
