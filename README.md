@@ -1,11 +1,8 @@
-# Empires of Conflict
- A 2D real time strategy project I made with Unity.  
+# Empires of Conflict 
 Empires of Conflict is a 2D strategy game where you can build and produce units to defend your base from enemy attacks. You can build barracks to produce soldiers, power plants to generate power, and other structures to help you in your quest to victory.
  
 ![RTSProject2D 5 06 2023 10_29_20](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/c7a81e3a-a1ce-4d02-a83b-9aa9426462d5)
  
-![RTSProject2D 5 06 2023 10_24_27](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/a246d9f8-5d6a-41fd-b457-cf2595bc9076)
-
 # Features
 * Build and produce units to defend your base.
 * Multiple types of units with different strengths and weaknesses.
@@ -30,6 +27,8 @@ Empires of Conflict is a 2D strategy game where you can build and produce units 
 * Produce units: Some buildings can produce units. To produce a unit, select the building and left-click on it. A unit will be produced and added to your army.
 * Move units: Select a unit with the left mouse button. The unit will have a blue aura around it to show that it is selected. Right-click on a location on the map to order the unit to move to that location.
 * Attack with units: Select a unit with the left mouse button. The unit will have a blue aura around it to show that it is selected. Right-click on an enemy unit or building to order the unit to attack it.
+
+![RTSProject2D 5 06 2023 10_24_27](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/a246d9f8-5d6a-41fd-b457-cf2595bc9076)
 
 # To-Do
 * Pathfinding should be optimized.  
