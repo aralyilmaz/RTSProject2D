@@ -33,7 +33,6 @@ public class ScrollViewItem : MonoBehaviour
 
     private void InitBuilding()
     {
-        //BuildingGhost.instance.SetButton(this);
         BuildingGhost.instance.SetBuilding(buildingObject);
         BuildingGhost.instance.CreateVisual();
     }

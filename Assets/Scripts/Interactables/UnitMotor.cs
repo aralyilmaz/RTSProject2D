@@ -21,11 +21,11 @@ public class UnitMotor : MonoBehaviour
 
     public void SetTargetPosition(Vector3 targetPosition)
     {
-            targetPosition.z = 0;
-            this.targetPosition = targetPosition;
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
-            moveDirection.z = 0;
-            SetVelocity(moveDirection);
+        targetPosition.z = 0;
+        this.targetPosition = targetPosition;
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
+        moveDirection.z = 0;
+        SetVelocity(moveDirection);
     }
 
     private void PerformMovement()

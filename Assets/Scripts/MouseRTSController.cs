@@ -64,7 +64,7 @@ public class MouseRTSController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            AdjustSelectedArea();
+            AdjustSelectedArea(); //for visualizing selected area
         }
 
         //Left mouse button release

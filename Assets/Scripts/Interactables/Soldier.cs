@@ -65,12 +65,14 @@ public class Soldier : Interactable
             {
                 if (hit.collider.TryGetComponent<Interactable>(out Interactable attackTarget))
                 {
+                    //if hit interactable than give attack order
                     isAttacking = true;
                     AttackOrder(attackTarget);
                 }
             }
             else
             {
+                //if not hit interactable than give move order
                 isAttacking = false;
                 if (isAttackCoroutineRunning)
                 {
@@ -123,13 +125,13 @@ public class Soldier : Interactable
         {
             offset = new Vector3(1f, 1f, 0) * 0.5f;
 
-            //Adjust building graphics
+            //Adjust unit graphics
             graphics.localPosition = graphics.localPosition + offset;
 
             this.soldierObject = soldierObject;
             if (TryGetComponent<CircleCollider2D>(out CircleCollider2D soldierCollider))
             {
-                //Adjust building collider
+                //Adjust unit collider
                 soldierCollider.offset = offset;
             }
             selectedGameObject.transform.localPosition = graphics.localPosition;
@@ -172,9 +174,11 @@ public class Soldier : Interactable
         pathList = null;
         //find the shortest path with A*
         pathList = PathfindingManager.instance.FindPath(graphics.transform.position, mousePosition);
-        if(pathList == null)
+
+        //if had a valid path than moving
+        if (!(pathList == null || (pathList != null && pathList.Count <= 0)))
         {
-            Debug.Log("List null");
+            isMoving = true;
         }
     }
 
@@ -184,6 +188,12 @@ public class Soldier : Interactable
         gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
         //find the shortest path with A*
         pathList = PathfindingManager.instance.FindPath(new Vector2(x, y), gridPosition);
+
+        //if had a valid path than moving
+        if (!(pathList == null || (pathList != null && pathList.Count <= 0)))
+        {
+            isMoving = true;
+        }
     }
 
     public void MoveOrder(NodeBase targetNode)
@@ -191,12 +201,13 @@ public class Soldier : Interactable
         pathList = null;
         //find the shortest path with A*
         gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
-        NodeBase node = gridManager.GetTileAtPosition(new Vector2(x, y));
+        NodeBase node = gridManager.GetNodeAtPosition(new Vector2(x, y));
         if (node != null)
         {
             pathList = PathfindingManager.instance.FindPath(node, targetNode);
         }
 
+        //if had a valid path than moving
         if (!(pathList == null || (pathList != null && pathList.Count <= 0)))
         {
             isMoving = true;
@@ -227,6 +238,7 @@ public class Soldier : Interactable
             //Continue Path
             pathList.RemoveAt(remainingPath - 1);
 
+            //path completed
             if(pathList.Count == 0)
             {
                 pathList = null;
@@ -241,7 +253,7 @@ public class Soldier : Interactable
     private void SetStandingOnNodeWalkable(bool walkable)
     {
         gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
-        NodeBase node = gridManager.GetTileAtPosition(new Vector2(x, y));
+        NodeBase node = gridManager.GetNodeAtPosition(new Vector2(x, y));
         if(node != null)
         {
             node.walkable = walkable;
@@ -296,7 +308,7 @@ public class Soldier : Interactable
                 //give order to move
                 foreach (Vector2Int neighbor in targetNeighbors)
                 {
-                    NodeBase targetNode = gridManager.GetTileAtPosition(neighbor);
+                    NodeBase targetNode = gridManager.GetNodeAtPosition(neighbor);
                     if (targetNode != null && targetNode.walkable)
                     {
                         MoveOrder(targetNode);

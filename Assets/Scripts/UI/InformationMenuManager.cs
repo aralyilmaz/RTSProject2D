@@ -31,6 +31,7 @@ public class InformationMenuManager : MonoBehaviour
         informationMenu = this.gameObject;
         informationMenu.SetActive(false);
 
+        //subscribe to interactable selected event
         MouseRTSController.instance.OnInteractableSelected += HandleInteractableSelected;
     }
 
@@ -56,7 +57,7 @@ public class InformationMenuManager : MonoBehaviour
     {
         //If any interactable selected activate information menu
         destroyButton.onClick.RemoveAllListeners();
-        if (interactable.placed)
+        if (interactable.placed)//if the interactable currently on board
         {
             informationMenu.SetActive(true);
             if (interactable is Building)
@@ -82,7 +83,6 @@ public class InformationMenuManager : MonoBehaviour
         menuNameText.text = building.buildingObject.name;
         menuImage.sprite = building.buildingObject.icon;
 
-        //statText.text = "HP: " + building.buildingObject.health.ToString() + "/" + building.health.ToString();
         statText.text = "HP: " + building.health.ToString() + "/" + building.buildingObject.health.ToString();
 
         InitDestroyBuildingButton(destroyButton, building);

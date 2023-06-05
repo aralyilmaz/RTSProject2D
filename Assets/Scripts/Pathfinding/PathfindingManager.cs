@@ -48,8 +48,8 @@ public class PathfindingManager : MonoBehaviour
     //For using pathfinding with grid position
     public List<NodeBase> FindPath(Vector2 startGrid, Vector2 targetGrid)
     {
-        NodeBase startNode = gridManager.GetTileAtPosition(startGrid);
-        NodeBase targetNode = gridManager.GetTileAtPosition(targetGrid);
+        NodeBase startNode = gridManager.GetNodeAtPosition(startGrid);
+        NodeBase targetNode = gridManager.GetNodeAtPosition(targetGrid);
         if(startNode != null && targetNode != null)
         {
             return FindPath(startNode, targetNode);

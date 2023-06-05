@@ -26,9 +26,9 @@ public class GridVisualizer : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                //gridManager.gridMap.GetWorldPosition(x, y);
                 var spawnedTile = Instantiate(gridTilePrefab, gridManager.gridMap.GetWorldPosition(x, y) + offset, Quaternion.identity, tiles);
 
+                //offset means give slightly different color to tile
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.InitTile(isOffset);
             }

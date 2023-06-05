@@ -10,6 +10,7 @@ public class GridMap
     private int[,] gridArray;
     private TextMesh[,] debugTextArray;
 
+    //Creates the grid map with given values
     public GridMap(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;

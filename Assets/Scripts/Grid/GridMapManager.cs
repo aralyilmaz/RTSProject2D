@@ -23,19 +23,20 @@ public class GridMapManager : MonoBehaviour
     public float cellSize = 1f;
     public Vector3 originPosition = new Vector3(-7, -5, 0);
 
+    //Directions for getting neighbors
     private readonly List<Vector2Int> Directions = new List<Vector2Int>() {
             new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0),
             new Vector2Int(1, 1), new Vector2Int(1, -1), new Vector2Int(-1, -1), new Vector2Int(-1, 1)
         };
 
-    public Dictionary<Vector2, NodeBase> tiles { get; private set; }
+    public Dictionary<Vector2, NodeBase> nodes { get; private set; }
 
     void Start()
     {
         gridMap = new GridMap(width, height, cellSize, originPosition);
 
-        tiles = GenerateTiles();
-        foreach (var tile in tiles.Values) tile.CacheNeighbors();
+        nodes = GenerateNodes();
+        foreach (var tile in nodes.Values) tile.CacheNeighbors();
 
         if(TryGetComponent<GridVisualizer>(out GridVisualizer visualizer))
         {
@@ -43,6 +44,7 @@ public class GridMapManager : MonoBehaviour
         }
     }
 
+    //used to get neighbors of an object on grid
     public List<Vector2Int> GetObjectNeighbors(Vector2Int objectPosition, int objectWidth, int objectHeight)
     {
         List<Vector2Int> neighbors = new List<Vector2Int>();
@@ -59,7 +61,7 @@ public class GridMapManager : MonoBehaviour
                     if (neighborX >= objectPosition.x && neighborX < objectPosition.x + objectWidth
                         && neighborY >= objectPosition.y && neighborY < objectPosition.y + objectHeight)
                     {
-
+                        //if true we are inside the object
                     }
                     else
                     {
@@ -75,23 +77,22 @@ public class GridMapManager : MonoBehaviour
         return neighbors;
     }
 
-    private Dictionary<Vector2, NodeBase> GenerateTiles()
+    //nodes used to pathfind
+    private Dictionary<Vector2, NodeBase> GenerateNodes()
     {
-        Dictionary<Vector2, NodeBase> tiles = new Dictionary<Vector2, NodeBase>();
+        Dictionary<Vector2, NodeBase> nodes = new Dictionary<Vector2, NodeBase>();
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                //var tile = Instantiate(nodeBasePrefab, grid.transform);
-                //tile.Init(DecideIfObstacle(), new SquareCoords { Pos = new Vector3(x, y) });
                 Vector2 coords = new Vector2(x, y);
                 NodeBase tile = new NodeBase(coords, true);
-                tiles.Add(coords, tile);
+                nodes.Add(coords, tile);
             }
         }
-        return tiles;
+        return nodes;
     }
 
-    public NodeBase GetTileAtPosition(Vector2 pos) => tiles.TryGetValue(pos, out var tile) ? tile : null;
+    public NodeBase GetNodeAtPosition(Vector2 pos) => nodes.TryGetValue(pos, out var tile) ? tile : null;
 }

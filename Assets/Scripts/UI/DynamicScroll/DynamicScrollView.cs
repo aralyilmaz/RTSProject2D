@@ -14,9 +14,6 @@ public class DynamicScrollView : MonoBehaviour
 
     public Transform content;
 
-    //public List<Sprite> spriteList;
-    //public List<string> textList;
-    //public List<GameObject> gameobjectList;
     public List<BuildingObject> buildingList;
 
     private int topItemIndex;
@@ -70,7 +67,6 @@ public class DynamicScrollView : MonoBehaviour
             tmp = Instantiate(objectToPool, content);
             if(tmp.TryGetComponent<ScrollViewItem>(out item))
             {
-                //item.InitItemButton(spriteList[0], textList[i], gameobjectList[i]);
                 item.InitItemButton(buildingList[i]);
             }
             //tmp.SetActive(false);
@@ -113,15 +109,14 @@ public class DynamicScrollView : MonoBehaviour
         // Check to make sure the pool is not empty
         if (goingUp)
         {
+            //if we go up then put the bottom object in the pool to top
             GameObject newObj = GetPooledObject(botItemIndex);
             if (newObj != null)
             {
-                //newObj.transform.SetParent(content);
-                //newObj.transform.SetAsFirstSibling();
                 newObj.transform.localPosition = Vector3.up * 50 * topNextItemPos;
-                topItemIndex = botItemIndex;
+                topItemIndex = botItemIndex; //bot item is now at the top
 
-                if (botItemIndex == 0)
+                if (botItemIndex == 0)//check to stay in range of object list
                 {
                     botItemIndex = poolSize - 1;
                 }
@@ -129,6 +124,7 @@ public class DynamicScrollView : MonoBehaviour
                 {
                     botItemIndex--;
                 }
+                //increase next positions because go up by 1
                 topNextItemPos++;
                 botNextItemPos++;
             }
@@ -136,15 +132,14 @@ public class DynamicScrollView : MonoBehaviour
 
         if (!goingUp)
         {
+            //if we go down then put the top object in the pool to bot
             GameObject newObj = GetPooledObject(topItemIndex);
             if (newObj != null)
             {
-                //newObj.transform.SetParent(content);
-                //newObj.transform.SetAsFirstSibling();
                 newObj.transform.localPosition = Vector3.up * 50 * botNextItemPos;
                 botItemIndex = topItemIndex;
 
-                if (topItemIndex == poolSize - 1)
+                if (topItemIndex == poolSize - 1)//check to stay in range of object list
                 {
                     topItemIndex = 0;
                 }
@@ -152,6 +147,7 @@ public class DynamicScrollView : MonoBehaviour
                 {
                     topItemIndex++;
                 }
+                //decrease next positions because go down by 1
                 botNextItemPos--;
                 topNextItemPos--;
             }

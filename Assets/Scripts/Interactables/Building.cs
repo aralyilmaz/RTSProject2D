@@ -52,7 +52,7 @@ public class Building : Interactable
         }
     }
 
-    //Create building and adjust pivots to make it fit into tiles
+    //Create building and adjust hitboxes, pivots to make it fit into tiles
     public void InitBuilding(BuildingObject buildingObject)
     {
         if (buildingObject != null)
@@ -100,6 +100,7 @@ public class Building : Interactable
     {
         foreach (Vector2Int neighbor in neighbors)
         {
+            //grid value 0 means suitable for placement
             if (GridMapManager.instance.gridMap.GetValue(neighbor.x, neighbor.y) == 0)
             {
                 spawnLocation = GridMapManager.instance.gridMap.GetWorldPosition(neighbor.x, neighbor.y);
@@ -125,7 +126,7 @@ public class Building : Interactable
         foreach (Vector2Int gridPosition in gridPositionList)
         {
             GridMapManager.instance.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
-            NodeBase node = GridMapManager.instance.GetTileAtPosition(gridPosition); //for pathfindig
+            NodeBase node = GridMapManager.instance.GetNodeAtPosition(gridPosition); //for pathfindig
             if (node != null)
             {
                 node.walkable = true; //for pathfindig

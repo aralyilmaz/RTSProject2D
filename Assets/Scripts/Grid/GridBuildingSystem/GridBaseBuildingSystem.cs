@@ -9,9 +9,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
     [SerializeField]
     private BuildingObject buildingObject;
 
-    public GameObject whiteTile;
     public GameObject redTile;
-    public GameObject greenTile;
     private GameObject[,] tileArray;
 
     void Start()
@@ -27,6 +25,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     public bool CheckPlacement(List<Vector2Int> gridPositionList)
     {
+        //grid value 0 means grid is suitable for placement
         foreach (Vector2Int gridPosition in gridPositionList)
         {
             if (gridManager.gridMap.GetValue(gridPosition.x, gridPosition.y) != 0)
@@ -48,6 +47,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
             Vector3 position = gridManager.gridMap.GetWorldPosition(x, y);
 
+            //if it is ok to place than place building
             if (CheckPlacement(gridPositionList))
             {
                 Transform placedBuilding = Instantiate(buildingObject.prefab, position, Quaternion.identity);
@@ -61,8 +61,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
                     gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 1); //for building
-                    gridManager.GetTileAtPosition(gridPosition).walkable = false; //for pathfindig
-                    //SetTileColor(gridPosition.x, gridPosition.y, 1);
+                    gridManager.GetNodeAtPosition(gridPosition).walkable = false; //for pathfindig
                 }
                 return true;
             }
@@ -70,32 +69,9 @@ public class GridBaseBuildingSystem : MonoBehaviour
         return false;
     }
 
-    public void SetTileColor(int x, int y, int color)
+    public void SetTileColorRed(int x, int y)
     {
-        switch (color)
-        {
-            case 0:
-                //White
-                PlaceTile(x, y, whiteTile);
-                break;
-
-            case 1:
-                //Red
-                PlaceTile(x, y, redTile);
-                break;
-
-            case 2:
-                //Green
-                PlaceTile(x, y, greenTile);
-                break;
-
-            default:
-                if(tileArray[x, y] == null)
-                {
-                    Destroy(tileArray[x, y]);
-                }
-                break;
-        }
+        PlaceTile(x, y, redTile);
     }
 
     private void PlaceTile(int x, int y, GameObject tile)
@@ -123,16 +99,4 @@ public class GridBaseBuildingSystem : MonoBehaviour
         yield return new WaitForSeconds(delay);
         building.placed = true;
     }
-    
-    //public void ClearTile(object sender, InformationMenuManager.OnBuildingDestroyButtonEventArgs e)
-    //{
-    //    gridManager.gridMap.GetXY(e.buildingPosition, out int x, out int y);
-    //    List<Vector2Int> gridPositionList = e.buildingObject.GetGridPositionList(new Vector2Int(x, y));
-
-    //    foreach (Vector2Int gridPosition in gridPositionList)
-    //    {
-    //        gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
-    //        gridManager.GetTileAtPosition(gridPosition).walkable = true; //for pathfindig
-    //    }
-    //}
 }

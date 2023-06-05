@@ -53,7 +53,7 @@ public class NodeBase
     {
         neighbors = new List<NodeBase>();
 
-        foreach (var tile in Dirs.Select(dir => GridMapManager.instance.GetTileAtPosition(coords + dir)).Where(tile => tile != null))
+        foreach (var tile in Dirs.Select(dir => GridMapManager.instance.GetNodeAtPosition(coords + dir)).Where(tile => tile != null))
         {
             neighbors.Add(tile);
         }
