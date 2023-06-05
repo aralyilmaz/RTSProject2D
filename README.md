@@ -7,10 +7,10 @@ Empires of Conflict is a 2D strategy game where you can build and produce units 
 ![RTSProject2D 5 06 2023 10_24_27](https://github.com/aralyilmaz/RTSProject2D/assets/64955826/a246d9f8-5d6a-41fd-b457-cf2595bc9076)
 
 # Features
-Build and produce units to defend your base
-Multiple types of units with different strengths and weaknesses
-Various structures to help you in your quest to victory
-Easy to learn, difficult to master gameplay
+## Build and produce units to defend your base.
+## Multiple types of units with different strengths and weaknesses.
+## Various structures to help you in your quest to victory.
+## Easy to learn, difficult to master gameplay.
 
 # How to Play
 To build a structure, click on the structure in the production menu and then click on the location on the map where you want to build it.
