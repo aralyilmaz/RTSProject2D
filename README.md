@@ -24,7 +24,7 @@ Empires of Conflict is a 2D strategy game where you can build and produce units 
 # How to Control Your Army
 * Move the camera: Use the WASD keys to move the camera around the game world.
 * Select a building: Click on the building icon in the production menu. The building will follow your mouse cursor. Left-click to place the building, or press the Esc button to cancel.
-* Produce units: Some buildings can produce units. To produce a unit, select the building and left-click on it. A unit will be produced and added to your army.
+* Produce units: Some buildings can produce units. To produce a unit, select the building and click on the image of unit it. A unit will be produced and added to your army.
 * Move units: Select a unit with the left mouse button. The unit will have a blue aura around it to show that it is selected. Right-click on a location on the map to order the unit to move to that location.
 * Attack with units: Select a unit with the left mouse button. The unit will have a blue aura around it to show that it is selected. Right-click on an enemy unit or building to order the unit to attack it.
 
