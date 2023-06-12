@@ -1,13 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
+    private float maxHealth;
+
     [SerializeField] private Transform healthBarTransform;
     private Vector3 scale = Vector3.one;
 
-    public void SetSize(float sizeNormalized)
+    public void SetMaxHealth(float maxHealth)
+    {
+        this.maxHealth = maxHealth;
+    }
+
+    private void SetSize(float sizeNormalized)
     {
         if(sizeNormalized >= 0 && sizeNormalized <= 1)
         {
@@ -16,9 +21,14 @@ public class HealthBar : MonoBehaviour
         }
     }
 
+    public void UpdateHealthBar(float currentHealth)
+    {
+        SetSize(currentHealth / maxHealth);
+    }
+
     public void SetHealthBarVisible(bool visible)
     {
-        healthBarTransform.gameObject.SetActive(visible);
+        healthBarTransform.parent.gameObject.SetActive(visible);
     }
 
 }

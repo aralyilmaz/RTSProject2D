@@ -18,13 +18,6 @@ public class PathfindingManager : MonoBehaviour
         instance = this;
     }
 
-    GridMapManager gridManager;
-
-    private void Start()
-    {
-        gridManager = GridMapManager.instance;
-    }
-
     //For using pathfinding with world position
     public List<NodeBase> FindPath(Vector3 startPosition, Vector3 targetPosition)
     {
@@ -34,8 +27,8 @@ public class PathfindingManager : MonoBehaviour
 
     private List<NodeBase> ConvertPositionToGrid(Vector3 startPosition, Vector3 targetPosition)
     {
-        gridManager.gridMap.GetXY(startPosition, out int xStart, out int yStart);
-        gridManager.gridMap.GetXY(targetPosition, out int xTarget, out int yTarget);
+        GridUtility.GetXY(startPosition, out int xStart, out int yStart);
+        GridUtility.GetXY(targetPosition, out int xTarget, out int yTarget);
 
         Vector2 startGrid = new Vector2(xStart, yStart);
         Vector2 targetGrid = new Vector2(xTarget, yTarget);
@@ -48,8 +41,8 @@ public class PathfindingManager : MonoBehaviour
     //For using pathfinding with grid position
     public List<NodeBase> FindPath(Vector2 startGrid, Vector2 targetGrid)
     {
-        NodeBase startNode = gridManager.GetNodeAtPosition(startGrid);
-        NodeBase targetNode = gridManager.GetNodeAtPosition(targetGrid);
+        NodeBase startNode = GridMapManager.instance.GetNodeAtPosition(startGrid);
+        NodeBase targetNode = GridMapManager.instance.GetNodeAtPosition(targetGrid);
         if(startNode != null && targetNode != null)
         {
             return FindPath(startNode, targetNode);

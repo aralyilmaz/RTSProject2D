@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class GridMap
@@ -35,6 +36,8 @@ public class GridMap
 
         //Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
         //Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
+
+        GridUtility.SetGridParameters(cellSize, originPosition, this);
     }
 
     public Vector3 GetWorldPosition(int x, int y)
@@ -103,3 +106,99 @@ public class GridMap
         return textMesh;
     }
 }
+
+public static class GridUtility
+{
+    //private static float cellSize;
+    //private static Vector3 originPosition;
+    private static GridMap gridMap;
+
+    public static void SetGridParameters(float cellSize, Vector3 originPosition, GridMap gridMap)
+    {
+        //GridUtility.cellSize = cellSize;
+        //GridUtility.originPosition = originPosition;
+        GridUtility.gridMap = gridMap;
+    }
+
+    public static Vector3 GetWorldPosition(int x, int y)
+    {
+        //return new Vector3(x, y, 0) * cellSize + originPosition;
+        if(gridMap != null)
+        {
+            return gridMap.GetWorldPosition(x, y);
+        }
+        else
+        {
+            return Vector3.one * (-1);
+        }
+    }
+
+    public static void GetXY(Vector3 worldPosition, out int x, out int y)
+    {
+        if(gridMap != null)
+        {
+            gridMap.GetXY(worldPosition, out x, out y);
+        }
+        else
+        {
+            x = -1;
+            y = -1;
+        }
+
+    }
+
+    public static Vector2 GetXY(Vector3 worldPosition)
+    {
+        if(gridMap != null)
+        {
+            gridMap.GetXY(worldPosition, out int x, out int y);
+            return new Vector2(x, y);
+        }
+        else
+        {
+            return Vector2.one * (-1);
+        }
+    }
+
+    public static void SetValue(int x, int y, int value)
+    {
+        if(gridMap != null)
+        {
+            gridMap.SetValue(x, y, value);
+        }
+    }
+
+    public static void SetValue(Vector3 worldPosition, int value)
+    {
+        if (gridMap != null)
+        {
+            gridMap.SetValue(worldPosition, value);
+        }
+    }
+
+    public static int GetValue(int x, int y)
+    {
+        if (gridMap != null)
+        {
+            return gridMap.GetValue(x, y);
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public static int GetValue(Vector3 worldPosition)
+    {
+        if (gridMap != null)
+        {
+            return gridMap.GetValue(worldPosition);
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+}
+

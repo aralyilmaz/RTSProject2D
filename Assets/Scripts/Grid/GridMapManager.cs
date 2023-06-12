@@ -16,8 +16,7 @@ public class GridMapManager : MonoBehaviour
         instance = this;
     }
 
-    public GridMap gridMap;
-
+    private GridMap gridMap;
     public int width = 15;
     public int height = 10;
     public float cellSize = 1f;

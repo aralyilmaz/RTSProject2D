@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /*	
 	This component is for all objects that the player can
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 	to be used as a base class.
 */
 
-public class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviour
 {
     //interactable currently being focused?
     public bool isFocus = false;
@@ -20,28 +21,13 @@ public class Interactable : MonoBehaviour
     public int width = 1;
     public int height = 1;
 
-    public virtual void Interact()
-    {
-        Debug.Log("Interacting with: " + this.name);
-        // This method is meant to be overwritten
-    }
+    public abstract void Interact();
 
-    public virtual Vector2Int GetGridPosition()
-    {
-        Debug.Log("GridPos " + this.name);
-        return new Vector2Int(0, 0);
-    }
+    public abstract Vector2Int GetGridPosition();
 
-    public virtual List<Vector2Int> GetNeighbors()
-    {
-        Debug.Log("Neighbors " + this.name);
-        return null;
-    }
+    public abstract List<Vector2Int> GetNeighbors();
 
-    public virtual void TakeDamage(float damage)
-    {
-        Debug.Log("TakingDamage " + this.name);
-    }
+    public abstract void TakeDamage(float damage);
 
     void Update()
     {

@@ -19,7 +19,6 @@ public class BuildingGhost : MonoBehaviour
 
     [SerializeField] private GridBaseBuildingSystem buildingSystem;
 
-    private GridMapManager grid;
     private Transform visual;
     private BuildingObject building;
 
@@ -27,7 +26,6 @@ public class BuildingGhost : MonoBehaviour
 
     void Start()
     {
-        grid = GridMapManager.instance;
         DestroyVisual();
     }
 
@@ -103,8 +101,8 @@ public class BuildingGhost : MonoBehaviour
                 return;
             }
 
-            grid.gridMap.GetXY(MouseRTSController.instance.mouseWorldPosition, out int x, out int y);
-            Vector3 targetPosition = grid.gridMap.GetWorldPosition(x, y); //get grid position that mouse standing on
+            GridUtility.GetXY(MouseRTSController.instance.mouseWorldPosition, out int x, out int y);
+            Vector3 targetPosition = GridUtility.GetWorldPosition(x, y); //get grid position that mouse standing on
             visual.position = Vector3.Lerp(visual.position, targetPosition, Time.deltaTime * 10f); //slide building ghost in place
 
             //get points to check

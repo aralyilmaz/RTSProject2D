@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -24,14 +25,14 @@ public class Building : Interactable
 
     [SerializeField] private HealthBar healthBar;
 
-    private void Start()
+    public override void Interact()
     {
-        healthBar = GetComponent<HealthBar>();
+        Debug.Log("Interacting with: " + this.name);
     }
 
     public override Vector2Int GetGridPosition()
     {
-        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        GridUtility.GetXY(transform.position, out int x, out int y);
         return new Vector2Int(x, y);
     }
 
@@ -44,13 +45,15 @@ public class Building : Interactable
     {
         health = health - damage;
         healthBar.SetHealthBarVisible(true);
-        healthBar.SetSize(health / buildingObject.health);
+        healthBar.UpdateHealthBar(health);
+
         if (health <= 0)
         {
             //Debug.Log("Die " + this.name);
             Die();
         }
     }
+
 
     //Create building and adjust hitboxes, pivots to make it fit into tiles
     public void InitBuilding(BuildingObject buildingObject)
@@ -78,6 +81,8 @@ public class Building : Interactable
             gfxRenderer.sprite = buildingObject.icon;
 
             CacheNeighbors();
+            healthBar = GetComponent<HealthBar>();
+            healthBar.SetMaxHealth(buildingObject.health);
         }
     }
 
@@ -101,9 +106,9 @@ public class Building : Interactable
         foreach (Vector2Int neighbor in neighbors)
         {
             //grid value 0 means suitable for placement
-            if (GridMapManager.instance.gridMap.GetValue(neighbor.x, neighbor.y) == 0)
+            if (GridUtility.GetValue(neighbor.x, neighbor.y) == 0)
             {
-                spawnLocation = GridMapManager.instance.gridMap.GetWorldPosition(neighbor.x, neighbor.y);
+                spawnLocation = GridUtility.GetWorldPosition(neighbor.x, neighbor.y);
                 return true;
             }
         }
@@ -112,7 +117,7 @@ public class Building : Interactable
 
     private void CacheNeighbors()
     {
-        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        GridUtility.GetXY(transform.position, out int x, out int y);
         neighbors = GridMapManager.instance.GetObjectNeighbors(new Vector2Int(x, y), width, height);
     }
 
@@ -120,12 +125,12 @@ public class Building : Interactable
     {
         healthBar.SetHealthBarVisible(false);
 
-        GridMapManager.instance.gridMap.GetXY(transform.position, out int x, out int y);
+        GridUtility.GetXY(transform.position, out int x, out int y);
         List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
 
         foreach (Vector2Int gridPosition in gridPositionList)
         {
-            GridMapManager.instance.gridMap.SetValue(gridPosition.x, gridPosition.y, 0); //for building
+            GridUtility.SetValue(gridPosition.x, gridPosition.y, 0); //for building
             NodeBase node = GridMapManager.instance.GetNodeAtPosition(gridPosition); //for pathfindig
             if (node != null)
             {

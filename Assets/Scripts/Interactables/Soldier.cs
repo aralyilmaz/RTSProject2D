@@ -36,11 +36,33 @@ public class Soldier : Interactable
 
     private bool hasOrder = false;
 
-    private void Start()
+    public override void Interact()
     {
-        healthBar = GetComponent<HealthBar>();
-        motor = GetComponent<UnitMotor>();
-        pathList = new List<NodeBase>();
+        Debug.Log("Interacting with: " + this.name);
+    }
+
+    public override Vector2Int GetGridPosition()
+    {
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
+        return new Vector2Int(x, y);
+    }
+
+    public override List<Vector2Int> GetNeighbors()
+    {
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
+        return GridMapManager.instance.GetObjectNeighbors(new Vector2Int(x, y), width, height);
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        health = health - damage;
+        healthBar.SetHealthBarVisible(true);
+        healthBar.UpdateHealthBar(health);
+        if (health <= 0)
+        {
+            //Debug.Log("Die" + this.name);
+            Die();
+        }
     }
 
     private void Update()
@@ -85,32 +107,12 @@ public class Soldier : Interactable
         DoOrder();
     }
 
-    public override Vector2Int GetGridPosition()
-    {
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
-        return new Vector2Int(x, y);
-    }
-
-    public override List<Vector2Int> GetNeighbors()
-    {
-        GridMapManager.instance.gridMap.GetXY(graphics.transform.position, out int x, out int y);
-        return GridMapManager.instance.GetObjectNeighbors(new Vector2Int(x, y), width, height);
-    }
-
-    public override void TakeDamage(float damage)
-    {
-        health = health - damage;
-        healthBar.SetHealthBarVisible(true);
-        healthBar.SetSize(health / soldierObject.health);
-        if (health <= 0)
-        {
-            //Debug.Log("Die" + this.name);
-            Die();
-        }
-    }
-
     public void InitSoldier(UnitObjects soldierObject)
     {
+        healthBar = GetComponent<HealthBar>();
+        motor = GetComponent<UnitMotor>();
+        pathList = new List<NodeBase>();
+
         gridManager = GridMapManager.instance;
         health = soldierObject.health;
         damage = soldierObject.damage;
@@ -145,6 +147,7 @@ public class Soldier : Interactable
             SetStandingOnNodeWalkable(false);
 
             SetSelectedVisible(false);
+            healthBar.SetMaxHealth(soldierObject.health);
         }
     }
 
@@ -185,7 +188,7 @@ public class Soldier : Interactable
     public void MoveOrder(Vector2Int gridPosition)
     {
         pathList = null;
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
         //find the shortest path with A*
         pathList = PathfindingManager.instance.FindPath(new Vector2(x, y), gridPosition);
 
@@ -200,7 +203,7 @@ public class Soldier : Interactable
     {
         pathList = null;
         //find the shortest path with A*
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
         NodeBase node = gridManager.GetNodeAtPosition(new Vector2(x, y));
         if (node != null)
         {
@@ -229,7 +232,7 @@ public class Soldier : Interactable
         SetStandingOnNodeWalkable(true);
         NodeBase currPath = pathList[pathList.Count - 1];
         Vector3 currentPosition = transform.position;
-        Vector3 targetPosition = gridManager.gridMap.GetWorldPosition((int)currPath.coords.x, (int)currPath.coords.y);
+        Vector3 targetPosition = GridUtility.GetWorldPosition((int)currPath.coords.x, (int)currPath.coords.y);
 
         float distanceCheck = 0.05f;
         
@@ -252,7 +255,7 @@ public class Soldier : Interactable
 
     private void SetStandingOnNodeWalkable(bool walkable)
     {
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
         NodeBase node = gridManager.GetNodeAtPosition(new Vector2(x, y));
         if(node != null)
         {
@@ -262,13 +265,13 @@ public class Soldier : Interactable
 
     private Vector2 GetStandingOnTile()
     {
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
         return new Vector2(x, y);
     }
 
     private void SetStandingOnTile(int value)
     {
-        gridManager.gridMap.SetValue(graphics.transform.position, value);
+        GridUtility.SetValue(graphics.transform.position, value);
     }
 
     private void AttackOrder(Interactable attackTarget)
@@ -322,7 +325,7 @@ public class Soldier : Interactable
 
     private bool CheckAttackRange()
     {
-        gridManager.gridMap.GetXY(graphics.transform.position, out int x, out int y);
+        GridUtility.GetXY(graphics.transform.position, out int x, out int y);
         Vector2 myPosition = new Vector2Int(x, y);
 
         foreach (Vector2Int neighbor in targetNeighbors)

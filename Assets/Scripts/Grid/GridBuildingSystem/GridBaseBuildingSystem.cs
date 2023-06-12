@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GridBaseBuildingSystem : MonoBehaviour
 {
-    private GridMapManager gridManager;
 
     [SerializeField]
     private BuildingObject buildingObject;
@@ -14,8 +13,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     void Start()
     {
-        gridManager = GridMapManager.instance;
-        tileArray = new GameObject[gridManager.width, gridManager.height];
+        tileArray = new GameObject[GridMapManager.instance.width, GridMapManager.instance.height];
     }
 
     public void SetBuilding(BuildingObject building)
@@ -28,7 +26,7 @@ public class GridBaseBuildingSystem : MonoBehaviour
         //grid value 0 means grid is suitable for placement
         foreach (Vector2Int gridPosition in gridPositionList)
         {
-            if (gridManager.gridMap.GetValue(gridPosition.x, gridPosition.y) != 0)
+            if (GridUtility.GetValue(gridPosition.x, gridPosition.y) != 0)
             {
                 return false;
             }
@@ -41,11 +39,11 @@ public class GridBaseBuildingSystem : MonoBehaviour
         if (buildingObject != null)
         {
             int x, y;
-            gridManager.gridMap.GetXY(MouseRTSController.instance.mouseWorldPosition, out x, out y);
+            GridUtility.GetXY(MouseRTSController.instance.mouseWorldPosition, out x, out y);
 
             List<Vector2Int> gridPositionList = buildingObject.GetGridPositionList(new Vector2Int(x, y));
 
-            Vector3 position = gridManager.gridMap.GetWorldPosition(x, y);
+            Vector3 position = GridUtility.GetWorldPosition(x, y);
 
             //if it is ok to place than place building
             if (CheckPlacement(gridPositionList))
@@ -60,8 +58,8 @@ public class GridBaseBuildingSystem : MonoBehaviour
                 }
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    gridManager.gridMap.SetValue(gridPosition.x, gridPosition.y, 1); //for building
-                    gridManager.GetNodeAtPosition(gridPosition).walkable = false; //for pathfindig
+                    GridUtility.SetValue(gridPosition.x, gridPosition.y, 1); //for building
+                    GridMapManager.instance.GetNodeAtPosition(gridPosition).walkable = false; //for pathfindig
                 }
                 return true;
             }
@@ -76,17 +74,17 @@ public class GridBaseBuildingSystem : MonoBehaviour
 
     private void PlaceTile(int x, int y, GameObject tile)
     {
-        if (tile != null && x >= 0 && y >= 0 && x < gridManager.width && y < gridManager.height)
+        if (tile != null && x >= 0 && y >= 0 && x < GridMapManager.instance.width && y < GridMapManager.instance.height)
         {
             if (tileArray[x, y] == null)
             {
-                Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
+                Vector3 position = GridUtility.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
                 tileArray[x, y] = Instantiate(tile, position, Quaternion.identity);
                 Destroy(tileArray[x, y], 0.2f);
             }
             else
             {
-                Vector3 position = gridManager.gridMap.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
+                Vector3 position = GridUtility.GetWorldPosition(x, y) + (Vector3.one * 0.5f);
                 Destroy(tileArray[x, y]);
                 tileArray[x, y] = Instantiate(tile, position, Quaternion.identity);
                 Destroy(tileArray[x, y], 0.2f);
