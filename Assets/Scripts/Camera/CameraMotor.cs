@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraMotor : MonoBehaviour
+public class CameraMotor : MonoBehaviour, IMoveVelocity
 {
     [SerializeField]
     private float moveSpeed = 1f;

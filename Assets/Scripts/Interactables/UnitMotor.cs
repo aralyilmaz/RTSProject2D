@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitMotor : MonoBehaviour
+public class UnitMotor : MonoBehaviour, IMoveVelocity
 {
     [SerializeField]
     private float moveSpeed = 1f;

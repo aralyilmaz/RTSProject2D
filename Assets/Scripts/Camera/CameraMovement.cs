@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) moveX = +1f;
 
         Vector3 moveVector = new Vector3(moveX, moveY).normalized;
-        if(TryGetComponent<CameraMotor>(out CameraMotor motor))
+        if(TryGetComponent<IMoveVelocity>(out IMoveVelocity motor))
         {
             motor.SetVelocity(moveVector);
         }
