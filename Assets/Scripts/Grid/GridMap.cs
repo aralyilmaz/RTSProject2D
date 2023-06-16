@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics.Tracing;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridMap
@@ -117,7 +118,10 @@ public static class GridUtility
     {
         //GridUtility.cellSize = cellSize;
         //GridUtility.originPosition = originPosition;
-        GridUtility.gridMap = gridMap;
+        if(GridUtility.gridMap == null)
+        {
+            GridUtility.gridMap = gridMap;
+        }
     }
 
     public static Vector3 GetWorldPosition(int x, int y)
